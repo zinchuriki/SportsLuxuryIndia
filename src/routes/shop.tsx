@@ -8,10 +8,10 @@ import { EmptyState } from "@/components/EmptyState";
 export const Route = createFileRoute("/shop")({
   head: () => ({
     meta: [
-      { title: "Shop — Elev8" },
-      { name: "description", content: "Browse the full Elev8 edit — luxury and sport, side by side." },
-      { property: "og:title", content: "Shop — Elev8" },
-      { property: "og:description", content: "Browse the full Elev8 edit." },
+      { title: "SportsLuxuryIndia" },
+      { name: "description", content: "Browse the full SportsLuxuryIndia edit — luxury and sport, side by side." },
+      { property: "og:title", content: "Shop — SportsLuxuryIndia" },
+      { property: "og:description", content: "Browse the full SportsLuxuryIndia edit." },
       { property: "og:url", content: "/shop" },
     ],
     links: [{ rel: "canonical", href: "/shop" }],
