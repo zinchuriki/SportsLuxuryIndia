@@ -1,29 +1,167 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { motion } from "framer-motion";
+import { ArrowRight, Sparkles, Zap } from "lucide-react";
+import { productsQueryOptions } from "@/lib/queries";
+import { ProductCard } from "@/components/ProductCard";
+import { EmptyState } from "@/components/EmptyState";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Your App" },
-      { name: "description", content: "Replace this with a one-sentence description of your app." },
-      { property: "og:title", content: "Your App" },
-      { property: "og:description", content: "Replace this with a one-sentence description of your app." },
+      { title: "Elev8 — Luxury & Sport, Engineered" },
+      { name: "description", content: "Curated luxury objects and elite sports gear. A bold athletic-luxe edit, built for the way you move." },
+      { property: "og:title", content: "Elev8 — Luxury & Sport, Engineered" },
+      { property: "og:description", content: "Curated luxury objects and elite sports gear." },
+      { property: "og:url", content: "/" },
     ],
+    links: [{ rel: "canonical", href: "/" }],
   }),
+  loader: ({ context }) => context.queryClient.ensureQueryData(productsQueryOptions(undefined, 8)),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
+const MARQUEE_WORDS = ["Performance", "Luxury", "Precision", "Speed", "Craft", "Power", "Heritage", "Edge"];
+
 function Index() {
+  const { data: products } = useSuspenseQuery(productsQueryOptions(undefined, 8));
+
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div>
+      {/* HERO */}
+      <section className="relative overflow-hidden bg-grain">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full gradient-ember blur-[120px] opacity-30" />
+          <div className="absolute -bottom-40 -left-40 w-[600px] h-[600px] rounded-full gradient-luxe blur-[140px] opacity-20" />
+        </div>
+        <div className="relative mx-auto max-w-7xl px-6 pt-24 pb-32 md:pt-32 md:pb-40">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="max-w-4xl"
+          >
+            <div className="inline-flex items-center gap-2 px-3 py-1 border border-border rounded-full text-xs uppercase tracking-widest text-muted-foreground mb-8">
+              <Sparkles className="w-3 h-3 text-gold" />
+              New season · Limited drops
+            </div>
+            <h1 className="text-display text-[18vw] md:text-[10rem] uppercase leading-[0.85]">
+              Move<br />
+              <span className="text-ember">Differently.</span>
+            </h1>
+            <p className="mt-8 text-lg md:text-xl text-muted-foreground max-w-2xl">
+              A curated edit where luxury meets performance. Objects engineered for the way you train, travel, and live —
+              with the heft of heritage and the bite of the modern world.
+            </p>
+            <div className="mt-10 flex flex-wrap gap-4">
+              <Link
+                to="/shop"
+                className="group inline-flex items-center gap-2 px-8 py-4 gradient-ember text-ember-foreground font-display tracking-widest uppercase text-sm rounded-sm hover:opacity-90 transition"
+              >
+                Shop the edit
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              </Link>
+              <Link
+                to="/about"
+                className="inline-flex items-center gap-2 px-8 py-4 border border-border font-display tracking-widest uppercase text-sm rounded-sm hover:bg-secondary transition"
+              >
+                Our story
+              </Link>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Marquee */}
+        <div className="border-y border-border overflow-hidden bg-card/50">
+          <div className="flex animate-marquee whitespace-nowrap py-4">
+            {[...MARQUEE_WORDS, ...MARQUEE_WORDS, ...MARQUEE_WORDS, ...MARQUEE_WORDS].map((word, i) => (
+              <span key={i} className="font-display text-3xl uppercase tracking-[0.3em] mx-8 text-muted-foreground">
+                {word} <span className="text-ember mx-4">/</span>
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* DUAL WORLDS */}
+      <section className="mx-auto max-w-7xl px-6 py-24 grid md:grid-cols-2 gap-6">
+        {[
+          {
+            label: "Luxury",
+            title: "Heritage. Refined.",
+            copy: "Watches, leather, and accessories built once — to last forever.",
+            cls: "gradient-luxe text-gold-foreground",
+          },
+          {
+            label: "Sport",
+            title: "Built to push back.",
+            copy: "Performance gear engineered for athletes who demand the edge.",
+            cls: "gradient-ember text-ember-foreground",
+          },
+        ].map((w) => (
+          <motion.div
+            key={w.label}
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className={`relative overflow-hidden rounded-md p-10 md:p-14 min-h-[360px] flex flex-col justify-end ${w.cls}`}
+          >
+            <div className="absolute top-6 right-6 text-xs uppercase tracking-widest opacity-70">
+              <Zap className="w-4 h-4 inline mr-1" />
+              {w.label}
+            </div>
+            <h3 className="text-display text-5xl md:text-6xl uppercase leading-none">{w.title}</h3>
+            <p className="mt-4 max-w-md opacity-90">{w.copy}</p>
+            <Link
+              to="/shop"
+              className="mt-6 inline-flex items-center gap-2 text-sm uppercase tracking-widest font-medium underline-offset-4 hover:underline self-start"
+            >
+              Explore {w.label} <ArrowRight className="w-4 h-4" />
+            </Link>
+          </motion.div>
+        ))}
+      </section>
+
+      {/* FEATURED PRODUCTS */}
+      <section className="mx-auto max-w-7xl px-6 py-12">
+        <div className="flex items-end justify-between mb-12 flex-wrap gap-4">
+          <div>
+            <p className="text-xs uppercase tracking-widest text-ember mb-2">The Edit</p>
+            <h2 className="text-display text-5xl md:text-7xl uppercase">Crossover.</h2>
+          </div>
+          <Link to="/shop" className="text-sm uppercase tracking-widest text-muted-foreground hover:text-foreground inline-flex items-center gap-2">
+            View all <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+
+        {products.length === 0 ? (
+          <EmptyState message="The drop hasn't landed yet" />
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
+            {products.map((p) => (
+              <ProductCard key={p.node.id} product={p} />
+            ))}
+          </div>
+        )}
+      </section>
+
+      {/* BRAND STRIP */}
+      <section className="border-t border-border mt-24 bg-card">
+        <div className="mx-auto max-w-7xl px-6 py-20 grid md:grid-cols-3 gap-10 text-center md:text-left">
+          {[
+            { k: "01", t: "Curated, not assembled", c: "Every piece earns its place — no filler, no trend-chasing." },
+            { k: "02", t: "Made to be used hard", c: "Lab-tested. Trail-proven. Backed by a lifetime promise." },
+            { k: "03", t: "Direct from the maker", c: "We work hand-in-hand with the studios behind the icons." },
+          ].map((b) => (
+            <div key={b.k}>
+              <div className="text-display text-ember text-4xl mb-3">{b.k}</div>
+              <h4 className="text-display uppercase tracking-widest text-lg">{b.t}</h4>
+              <p className="text-sm text-muted-foreground mt-2">{b.c}</p>
+            </div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
