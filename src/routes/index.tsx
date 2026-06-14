@@ -61,12 +61,6 @@ function Index() {
                 Shop the edit
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Link>
-              <Link
-                to="/about"
-                className="inline-flex items-center gap-2 px-8 py-4 border border-border font-display tracking-widest uppercase text-sm rounded-sm hover:bg-secondary transition"
-              >
-                Our story
-              </Link>
             </div>
           </motion.div>
         </div>
