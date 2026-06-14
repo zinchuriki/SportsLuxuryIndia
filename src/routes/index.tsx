@@ -98,6 +98,12 @@ function Index() {
             copy: "Performance gear engineered for athletes who demand the edge.",
             cls: "gradient-ember text-ember-foreground",
           },
+          {
+            label: "Autographed",
+            title: "Signed by legends.",
+            copy: "Authentic memorabilia — signed, verified, and ready to display.",
+            cls: "bg-foreground text-background",
+          },
         ].map((w) => (
           <motion.div
             key={w.label}
