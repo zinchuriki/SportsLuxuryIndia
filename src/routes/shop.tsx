@@ -8,8 +8,8 @@ import { EmptyState } from "@/components/EmptyState";
 export const Route = createFileRoute("/shop")({
   head: () => ({
     meta: [
-      { title: "SportsLuxuryIndia" },
-      { name: "description", content: "Browse the full SportsLuxuryIndia edit — luxury and sport, side by side." },
+      { title: "Shop — SportsLuxuryIndia" },
+      { name: "description", content: "Browse the full SportsLuxuryIndia edit — luxury, sport, and autographed memorabilia, side by side." },
       { property: "og:title", content: "Shop — SportsLuxuryIndia" },
       { property: "og:description", content: "Browse the full SportsLuxuryIndia edit." },
       { property: "og:url", content: "/shop" },
@@ -20,7 +20,7 @@ export const Route = createFileRoute("/shop")({
   component: ShopPage,
 });
 
-type Filter = "all" | "luxury" | "sport";
+type Filter = "all" | "luxury" | "sport" | "autographed";
 
 function ShopPage() {
   const { data: products } = useSuspenseQuery(productsQueryOptions(undefined, 48));
@@ -33,6 +33,15 @@ function ShopPage() {
       const type = (p.node.productType ?? "").toLowerCase();
       if (filter === "luxury") return tags.includes("luxury") || type.includes("luxury");
       if (filter === "sport") return tags.includes("sport") || type.includes("sport");
+      if (filter === "autographed")
+        return (
+          tags.includes("autographed") ||
+          tags.includes("autograph") ||
+          tags.includes("signed") ||
+          tags.includes("memorabilia") ||
+          type.includes("autograph") ||
+          type.includes("memorabilia")
+        );
       return true;
     });
   }, [products, filter]);
@@ -45,7 +54,7 @@ function ShopPage() {
       </header>
 
       <div className="flex flex-wrap gap-2 mb-10">
-        {(["all", "luxury", "sport"] as const).map((f) => (
+        {(["all", "luxury", "sport", "autographed"] as const).map((f) => (
           <button
             key={f}
             onClick={() => setFilter(f)}

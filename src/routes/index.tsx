@@ -9,10 +9,10 @@ import { EmptyState } from "@/components/EmptyState";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Elev8 — Luxury & Sport, Engineered" },
-      { name: "description", content: "Curated luxury objects and elite sports gear. A bold athletic-luxe edit, built for the way you move." },
-      { property: "og:title", content: "Elev8 — Luxury & Sport, Engineered" },
-      { property: "og:description", content: "Curated luxury objects and elite sports gear." },
+      { title: "SportsLuxuryIndia — Luxury, Sport & Autographed" },
+      { name: "description", content: "Curated luxury objects, elite sports gear, and authentic autographed memorabilia. A bold athletic-luxe edit, built for the way you move." },
+      { property: "og:title", content: "SportsLuxuryIndia — Luxury, Sport & Autographed" },
+      { property: "og:description", content: "Curated luxury, sport, and authentic autographed memorabilia." },
       { property: "og:url", content: "/" },
     ],
     links: [{ rel: "canonical", href: "/" }],
@@ -83,8 +83,8 @@ function Index() {
         </div>
       </section>
 
-      {/* DUAL WORLDS */}
-      <section className="mx-auto max-w-7xl px-6 py-24 grid md:grid-cols-2 gap-6">
+      {/* THREE WORLDS */}
+      <section className="mx-auto max-w-7xl px-6 py-24 grid md:grid-cols-3 gap-6">
         {[
           {
             label: "Luxury",
@@ -97,6 +97,12 @@ function Index() {
             title: "Built to push back.",
             copy: "Performance gear engineered for athletes who demand the edge.",
             cls: "gradient-ember text-ember-foreground",
+          },
+          {
+            label: "Autographed",
+            title: "Signed by legends.",
+            copy: "Authentic memorabilia — signed, verified, and ready to display.",
+            cls: "bg-foreground text-background",
           },
         ].map((w) => (
           <motion.div
