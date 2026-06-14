@@ -14,7 +14,7 @@ export function SiteHeader() {
       <div className="mx-auto max-w-7xl px-6 h-16 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
           <span className="font-display text-2xl tracking-[0.2em] uppercase">
-            Elev<span className="text-ember">8</span>
+            Sports<span className="text-ember">Luxury</span>India
           </span>
         </Link>
         <nav className="hidden md:flex items-center gap-8">
