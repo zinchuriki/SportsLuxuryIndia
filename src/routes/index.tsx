@@ -83,8 +83,8 @@ function Index() {
         </div>
       </section>
 
-      {/* DUAL WORLDS */}
-      <section className="mx-auto max-w-7xl px-6 py-24 grid md:grid-cols-2 gap-6">
+      {/* THREE WORLDS */}
+      <section className="mx-auto max-w-7xl px-6 py-24 grid md:grid-cols-3 gap-6">
         {[
           {
             label: "Luxury",
