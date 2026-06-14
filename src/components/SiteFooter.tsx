@@ -6,10 +6,10 @@ export function SiteFooter() {
       <div className="mx-auto max-w-7xl px-6 py-16 grid gap-12 md:grid-cols-4">
         <div className="md:col-span-2">
           <div className="font-display text-3xl tracking-[0.2em] uppercase">
-            Elev<span className="text-ember">8</span>
+            Sports<span className="text-ember">Luxury</span>India
           </div>
           <p className="mt-4 text-muted-foreground max-w-sm">
-            Where luxury meets performance. Curated objects engineered for the way you move, work, and live.
+            Where luxury meets performance — and legends sign off. Curated objects, elite sports gear, and authentic autographed memorabilia.
           </p>
         </div>
         <div>
