@@ -30,7 +30,7 @@ export function SiteFooter() {
         </div>
       </div>
       <div className="border-t border-border py-6 text-center text-xs text-muted-foreground uppercase tracking-widest">
-        © {new Date().getFullYear()} Elev8 — Crafted for performance
+        © {new Date().getFullYear()} SportsLuxuryIndia — Crafted for performance
       </div>
     </footer>
   );
