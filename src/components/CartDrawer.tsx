@@ -1,22 +1,20 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
   Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger,
 } from "@/components/ui/sheet";
-import { ShoppingBag, Minus, Plus, Trash2, ExternalLink, Loader2 } from "lucide-react";
+import { ShoppingBag, Minus, Plus, Trash2, MessageCircle } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
 
 export function CartDrawer() {
   const [isOpen, setIsOpen] = useState(false);
-  const { items, isLoading, isSyncing, updateQuantity, removeItem, getCheckoutUrl, syncCart } = useCartStore();
+  const { items, updateQuantity, removeItem, getWhatsAppOrderUrl } = useCartStore();
   const totalItems = items.reduce((s, i) => s + i.quantity, 0);
   const totalPrice = items.reduce((s, i) => s + parseFloat(i.price.amount) * i.quantity, 0);
 
-  useEffect(() => { if (isOpen) syncCart(); }, [isOpen, syncCart]);
-
-  const handleCheckout = () => {
-    const url = getCheckoutUrl();
+  const handleOrder = () => {
+    const url = getWhatsAppOrderUrl();
     if (url) {
       window.open(url, "_blank");
       setIsOpen(false);
@@ -96,21 +94,20 @@ export function CartDrawer() {
                 <div className="flex justify-between items-center">
                   <span className="text-display text-xl uppercase tracking-wider">Total</span>
                   <span className="text-2xl font-bold text-gold">
-                    {items[0]?.price.currencyCode || "$"} {totalPrice.toFixed(2)}
+                    {items[0]?.price.currencyCode || "INR"} {totalPrice.toFixed(2)}
                   </span>
                 </div>
                 <Button
-                  onClick={handleCheckout}
+                  onClick={handleOrder}
                   size="lg"
-                  disabled={items.length === 0 || isLoading || isSyncing}
-                  className="w-full gradient-ember text-ember-foreground hover:opacity-90 font-display tracking-widest uppercase text-base"
+                  disabled={items.length === 0}
+                  className="w-full bg-green-600 hover:bg-green-700 text-white font-display tracking-widest uppercase text-base"
                 >
-                  {isLoading || isSyncing ? (
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                  ) : (
-                    <><ExternalLink className="w-4 h-4 mr-2" />Checkout</>
-                  )}
+                  <MessageCircle className="w-4 h-4 mr-2" />Place Order on WhatsApp
                 </Button>
+                <p className="text-xs text-muted-foreground text-center">
+                  Your order will be sent via WhatsApp for confirmation & payment.
+                </p>
               </div>
             </>
           )}

@@ -24,7 +24,6 @@ export function SiteFooter() {
         <div>
           <h4 className="text-display uppercase tracking-widest text-sm mb-4">Company</h4>
           <ul className="space-y-2 text-sm text-muted-foreground">
-            <li><Link to="/about" className="hover:text-foreground">About</Link></li>
             <li><Link to="/contact" className="hover:text-foreground">Contact</Link></li>
           </ul>
         </div>

@@ -1,14 +1,4 @@
-import { useEffect } from "react";
-import { useCartStore } from "@/stores/cartStore";
-
+// No Shopify sync needed for WhatsApp-only ordering.
 export function useCartSync() {
-  const syncCart = useCartStore((state) => state.syncCart);
-  useEffect(() => {
-    syncCart();
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === "visible") syncCart();
-    };
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-    return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
-  }, [syncCart]);
+  // Intentionally empty — cart is local-only.
 }
