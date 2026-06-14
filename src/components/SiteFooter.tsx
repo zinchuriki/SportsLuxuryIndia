@@ -18,6 +18,7 @@ export function SiteFooter() {
             <li><Link to="/shop" className="hover:text-foreground">All Products</Link></li>
             <li><Link to="/shop" className="hover:text-foreground">Luxury</Link></li>
             <li><Link to="/shop" className="hover:text-foreground">Sport</Link></li>
+            <li><Link to="/shop" className="hover:text-foreground">Autographed</Link></li>
           </ul>
         </div>
         <div>
