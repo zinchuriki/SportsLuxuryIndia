@@ -9,10 +9,10 @@ import { EmptyState } from "@/components/EmptyState";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Elev8 — Luxury & Sport, Engineered" },
-      { name: "description", content: "Curated luxury objects and elite sports gear. A bold athletic-luxe edit, built for the way you move." },
-      { property: "og:title", content: "Elev8 — Luxury & Sport, Engineered" },
-      { property: "og:description", content: "Curated luxury objects and elite sports gear." },
+      { title: "SportsLuxuryIndia — Luxury, Sport & Autographed" },
+      { name: "description", content: "Curated luxury objects, elite sports gear, and authentic autographed memorabilia. A bold athletic-luxe edit, built for the way you move." },
+      { property: "og:title", content: "SportsLuxuryIndia — Luxury, Sport & Autographed" },
+      { property: "og:description", content: "Curated luxury, sport, and authentic autographed memorabilia." },
       { property: "og:url", content: "/" },
     ],
     links: [{ rel: "canonical", href: "/" }],
