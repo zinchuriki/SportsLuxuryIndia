@@ -54,7 +54,7 @@ function ShopPage() {
       </header>
 
       <div className="flex flex-wrap gap-2 mb-10">
-        {(["all", "luxury", "sport"] as const).map((f) => (
+        {(["all", "luxury", "sport", "autographed"] as const).map((f) => (
           <button
             key={f}
             onClick={() => setFilter(f)}
