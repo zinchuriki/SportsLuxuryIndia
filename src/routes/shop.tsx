@@ -20,7 +20,7 @@ export const Route = createFileRoute("/shop")({
   component: ShopPage,
 });
 
-type Filter = "all" | "luxury" | "sport";
+type Filter = "all" | "luxury" | "sport" | "autographed";
 
 function ShopPage() {
   const { data: products } = useSuspenseQuery(productsQueryOptions(undefined, 48));
@@ -33,6 +33,15 @@ function ShopPage() {
       const type = (p.node.productType ?? "").toLowerCase();
       if (filter === "luxury") return tags.includes("luxury") || type.includes("luxury");
       if (filter === "sport") return tags.includes("sport") || type.includes("sport");
+      if (filter === "autographed")
+        return (
+          tags.includes("autographed") ||
+          tags.includes("autograph") ||
+          tags.includes("signed") ||
+          tags.includes("memorabilia") ||
+          type.includes("autograph") ||
+          type.includes("memorabilia")
+        );
       return true;
     });
   }, [products, filter]);
