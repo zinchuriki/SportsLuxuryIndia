@@ -63,16 +63,16 @@ export function ProductCard({ product }: { product: ShopifyProduct }) {
             {isLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : <><Plus className="w-3 h-3 mr-1" />Add</>}
           </Button>
         </div>
-        <div className="mt-4 flex items-start justify-between gap-4">
+        <div className="mt-3 sm:mt-4 flex items-start justify-between gap-2 sm:gap-4">
           <div className="min-w-0">
-            <h3 className="font-display uppercase tracking-wider text-base leading-tight truncate">
+            <h3 className="font-display uppercase tracking-wider text-sm sm:text-base leading-tight truncate">
               {node.title}
             </h3>
             {node.productType && (
-              <p className="text-xs text-muted-foreground uppercase tracking-widest mt-1">{node.productType}</p>
+              <p className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-widest mt-1 truncate">{node.productType}</p>
             )}
           </div>
-          <p className="font-semibold text-gold whitespace-nowrap">
+          <p className="text-sm sm:text-base font-semibold text-gold whitespace-nowrap">
             {price.currencyCode} {parseFloat(price.amount).toFixed(2)}
           </p>
         </div>

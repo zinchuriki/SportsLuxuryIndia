@@ -54,21 +54,21 @@ function ShopPage() {
   }, [products, filter]);
 
   return (
-    <div className="mx-auto max-w-7xl px-6 py-12">
-      <Link to="/" className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground mb-6">
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 py-8 sm:py-12">
+      <Link to="/" className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground mb-4 sm:mb-6">
         <ArrowLeft className="w-3 h-3" /> Back
       </Link>
-      <header className="mb-12">
-        <p className="text-xs uppercase tracking-widest text-ember mb-2">Collection</p>
-        <h1 className="text-display text-6xl md:text-8xl uppercase leading-none">All Products</h1>
+      <header className="mb-8 sm:mb-12">
+        <p className="text-[10px] sm:text-xs uppercase tracking-widest text-ember mb-2">Collection</p>
+        <h1 className="text-display text-4xl sm:text-6xl md:text-8xl uppercase leading-none">All Products</h1>
       </header>
 
-      <div className="flex flex-wrap gap-2 mb-10">
+      <div className="flex flex-wrap gap-2 mb-6 sm:mb-10">
         {(["all", "luxury", "sport", "autographed"] as const).map((f) => (
           <button
             key={f}
             onClick={() => setFilter(f)}
-            className={`px-5 py-2 text-xs uppercase tracking-widest rounded-sm border transition ${
+            className={`px-3 sm:px-5 py-2 text-[10px] sm:text-xs uppercase tracking-widest rounded-sm border transition ${
               filter === f
                 ? "bg-foreground text-background border-foreground"
                 : "border-border text-muted-foreground hover:text-foreground"
@@ -82,7 +82,7 @@ function ShopPage() {
       {filtered.length === 0 ? (
         <EmptyState message={products.length === 0 ? "No products yet" : "Nothing matches that filter"} />
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
           {filtered.map((p) => (
             <ProductCard key={p.node.id} product={p} />
           ))}

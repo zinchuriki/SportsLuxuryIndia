@@ -27,8 +27,8 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-50 backdrop-blur-md bg-background/80 border-b border-border">
-      <div className="mx-auto max-w-7xl px-6 h-16 flex items-center justify-between">
-        <div className="flex items-center gap-4">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 h-14 sm:h-16 grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 sm:gap-4">
+        <div className="flex items-center gap-2 sm:gap-4 min-w-0">
           <Sheet>
             <SheetTrigger asChild>
               <button className="inline-flex items-center justify-center p-2 -ml-2 rounded-sm hover:bg-muted transition" aria-label="Open menu">
@@ -37,7 +37,7 @@ export function SiteHeader() {
             </SheetTrigger>
             <SheetContent side="left" className="w-72 sm:w-80">
               <SheetHeader>
-                <SheetTitle className="text-left font-display text-xl tracking-[0.15em] uppercase">
+                <SheetTitle className="text-left font-display text-lg sm:text-xl tracking-[0.12em] uppercase">
                   Sports<span className="text-ember">Luxury</span>India
                 </SheetTitle>
               </SheetHeader>
@@ -72,26 +72,14 @@ export function SiteHeader() {
               </nav>
             </SheetContent>
           </Sheet>
-
-          <Link to="/" className="flex items-center gap-2">
-            <span className="font-display text-2xl tracking-[0.2em] uppercase">
-              Sports<span className="text-ember">Luxury</span>India
-            </span>
-          </Link>
         </div>
-        <nav className="hidden md:flex items-center gap-8">
-          {nav.map((item) => (
-            <Link
-              key={item.to}
-              to={item.to}
-              className="text-sm uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors"
-              activeProps={{ className: "text-foreground" }}
-              activeOptions={{ exact: item.to === "/" }}
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+
+        <Link to="/" className="flex items-center justify-center min-w-0">
+          <span className="font-display text-sm sm:text-2xl tracking-[0.12em] sm:tracking-[0.2em] uppercase truncate">
+            Sports<span className="text-ember">Luxury</span>India
+          </span>
+        </Link>
+
         <CartDrawer />
       </div>
     </header>
