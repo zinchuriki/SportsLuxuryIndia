@@ -1,6 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
+import { ArrowLeft } from "lucide-react";
 import { productsQueryOptions } from "@/lib/queries";
 import { ProductCard } from "@/components/ProductCard";
 import { EmptyState } from "@/components/EmptyState";
@@ -47,7 +48,10 @@ function ShopPage() {
   }, [products, filter]);
 
   return (
-    <div className="mx-auto max-w-7xl px-6 py-16">
+    <div className="mx-auto max-w-7xl px-6 py-12">
+      <Link to="/" className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground mb-6">
+        <ArrowLeft className="w-3 h-3" /> Back
+      </Link>
       <header className="mb-12">
         <p className="text-xs uppercase tracking-widest text-ember mb-2">Collection</p>
         <h1 className="text-display text-6xl md:text-8xl uppercase leading-none">All Products</h1>
