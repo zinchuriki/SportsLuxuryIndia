@@ -34,29 +34,29 @@ function Index() {
           <div className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full gradient-ember blur-[120px] opacity-30" />
           <div className="absolute -bottom-40 -left-40 w-[600px] h-[600px] rounded-full gradient-luxe blur-[140px] opacity-20" />
         </div>
-        <div className="relative mx-auto max-w-7xl px-6 pt-24 pb-32 md:pt-32 md:pb-40">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 pt-14 pb-20 md:pt-32 md:pb-40">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="max-w-4xl"
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1 border border-border rounded-full text-xs uppercase tracking-widest text-muted-foreground mb-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 border border-border rounded-full text-[10px] sm:text-xs uppercase tracking-widest text-muted-foreground mb-6 sm:mb-8">
               <Sparkles className="w-3 h-3 text-gold" />
               New season · Limited drops
             </div>
-            <h1 className="text-display text-[18vw] md:text-[10rem] uppercase leading-[0.85]">
+            <h1 className="text-display text-[16vw] md:text-[10rem] uppercase leading-[0.85]">
               Move<br />
               <span className="text-ember">Differently.</span>
             </h1>
-            <p className="mt-8 text-lg md:text-xl text-muted-foreground max-w-2xl">
+            <p className="mt-6 sm:mt-8 text-sm sm:text-lg md:text-xl text-muted-foreground max-w-2xl">
               A curated edit where luxury meets performance. Objects engineered for the way you train, travel, and live —
               with the heft of heritage and the bite of the modern world.
             </p>
-            <div className="mt-10 flex flex-wrap gap-4">
+            <div className="mt-8 sm:mt-10 flex flex-wrap gap-4">
               <Link
                 to="/shop"
-                className="group inline-flex items-center gap-2 px-8 py-4 gradient-ember text-ember-foreground font-display tracking-widest uppercase text-sm rounded-sm hover:opacity-90 transition"
+                className="group inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 gradient-ember text-ember-foreground font-display tracking-widest uppercase text-xs sm:text-sm rounded-sm hover:opacity-90 transition"
               >
                 Shop the edit
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -67,10 +67,10 @@ function Index() {
 
         {/* Marquee */}
         <div className="border-y border-border overflow-hidden bg-card/50">
-          <div className="flex animate-marquee whitespace-nowrap py-4">
+          <div className="flex animate-marquee whitespace-nowrap py-3 sm:py-4">
             {[...MARQUEE_WORDS, ...MARQUEE_WORDS, ...MARQUEE_WORDS, ...MARQUEE_WORDS].map((word, i) => (
-              <span key={i} className="font-display text-3xl uppercase tracking-[0.3em] mx-8 text-muted-foreground">
-                {word} <span className="text-ember mx-4">/</span>
+              <span key={i} className="font-display text-lg sm:text-3xl uppercase tracking-[0.25em] sm:tracking-[0.3em] mx-5 sm:mx-8 text-muted-foreground">
+                {word} <span className="text-ember mx-3 sm:mx-4">/</span>
               </span>
             ))}
           </div>
@@ -78,7 +78,7 @@ function Index() {
       </section>
 
       {/* THREE WORLDS */}
-      <section className="mx-auto max-w-7xl px-6 py-24 grid md:grid-cols-3 gap-6">
+      <section className="mx-auto max-w-7xl px-4 sm:px-6 py-14 sm:py-24 grid md:grid-cols-3 gap-4 sm:gap-6">
         {[
           {
             label: "Luxury",
@@ -105,17 +105,17 @@ function Index() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className={`relative overflow-hidden rounded-md p-10 md:p-14 min-h-[360px] flex flex-col justify-end ${w.cls}`}
+            className={`relative overflow-hidden rounded-md p-6 sm:p-10 md:p-14 min-h-[240px] sm:min-h-[360px] flex flex-col justify-end ${w.cls}`}
           >
-            <div className="absolute top-6 right-6 text-xs uppercase tracking-widest opacity-70">
-              <Zap className="w-4 h-4 inline mr-1" />
+            <div className="absolute top-4 right-4 sm:top-6 sm:right-6 text-[10px] sm:text-xs uppercase tracking-widest opacity-70">
+              <Zap className="w-3 h-3 sm:w-4 sm:h-4 inline mr-1" />
               {w.label}
             </div>
-            <h3 className="text-display text-5xl md:text-6xl uppercase leading-none">{w.title}</h3>
-            <p className="mt-4 max-w-md opacity-90">{w.copy}</p>
+            <h3 className="text-display text-3xl sm:text-5xl md:text-6xl uppercase leading-none">{w.title}</h3>
+            <p className="mt-3 sm:mt-4 max-w-md text-sm sm:text-base opacity-90">{w.copy}</p>
             <Link
               to="/shop"
-              className="mt-6 inline-flex items-center gap-2 text-sm uppercase tracking-widest font-medium underline-offset-4 hover:underline self-start"
+              className="mt-4 sm:mt-6 inline-flex items-center gap-2 text-xs sm:text-sm uppercase tracking-widest font-medium underline-offset-4 hover:underline self-start"
             >
               Explore {w.label} <ArrowRight className="w-4 h-4" />
             </Link>
@@ -124,13 +124,13 @@ function Index() {
       </section>
 
       {/* FEATURED PRODUCTS */}
-      <section className="mx-auto max-w-7xl px-6 py-12">
-        <div className="flex items-end justify-between mb-12 flex-wrap gap-4">
+      <section className="mx-auto max-w-7xl px-4 sm:px-6 py-8 sm:py-12">
+        <div className="flex items-end justify-between mb-8 sm:mb-12 flex-wrap gap-4">
           <div>
-            <p className="text-xs uppercase tracking-widest text-ember mb-2">The Edit</p>
-            <h2 className="text-display text-5xl md:text-7xl uppercase">Crossover.</h2>
+            <p className="text-[10px] sm:text-xs uppercase tracking-widest text-ember mb-2">The Edit</p>
+            <h2 className="text-display text-4xl sm:text-5xl md:text-7xl uppercase">Crossover.</h2>
           </div>
-          <Link to="/shop" className="text-sm uppercase tracking-widest text-muted-foreground hover:text-foreground inline-flex items-center gap-2">
+          <Link to="/shop" className="text-xs sm:text-sm uppercase tracking-widest text-muted-foreground hover:text-foreground inline-flex items-center gap-2">
             View all <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
@@ -138,7 +138,7 @@ function Index() {
         {products.length === 0 ? (
           <EmptyState message="The drop hasn't landed yet" />
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
             {products.map((p) => (
               <ProductCard key={p.node.id} product={p} />
             ))}
@@ -147,16 +147,16 @@ function Index() {
       </section>
 
       {/* BRAND STRIP */}
-      <section className="border-t border-border mt-24 bg-card">
-        <div className="mx-auto max-w-7xl px-6 py-20 grid md:grid-cols-3 gap-10 text-center md:text-left">
+      <section className="border-t border-border mt-16 sm:mt-24 bg-card">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 py-12 sm:py-20 grid md:grid-cols-3 gap-8 sm:gap-10 text-center md:text-left">
           {[
             { k: "01", t: "Curated, not assembled", c: "Every piece earns its place — no filler, no trend-chasing." },
             { k: "02", t: "Made to be used hard", c: "Lab-tested. Trail-proven. Backed by a lifetime promise." },
             { k: "03", t: "Direct from the maker", c: "We work hand-in-hand with the studios behind the icons." },
           ].map((b) => (
             <div key={b.k}>
-              <div className="text-display text-ember text-4xl mb-3">{b.k}</div>
-              <h4 className="text-display uppercase tracking-widest text-lg">{b.t}</h4>
+              <div className="text-display text-ember text-3xl sm:text-4xl mb-2 sm:mb-3">{b.k}</div>
+              <h4 className="text-display uppercase tracking-widest text-base sm:text-lg">{b.t}</h4>
               <p className="text-sm text-muted-foreground mt-2">{b.c}</p>
             </div>
           ))}
