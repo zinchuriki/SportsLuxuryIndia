@@ -82,19 +82,19 @@ function Index() {
         {[
           {
             label: "Luxury",
-            title: "Heritage. Refined.",
+            title: "Luxury Shop",
             copy: "Watches, leather, and accessories built once — to last forever.",
             cls: "gradient-luxe text-gold-foreground",
           },
           {
             label: "Sport",
-            title: "Built to push back.",
+            title: "Sports Shop",
             copy: "Performance gear engineered for athletes who demand the edge.",
             cls: "gradient-ember text-ember-foreground",
           },
           {
             label: "Autographed",
-            title: "Signed by legends.",
+            title: "Autographed Items",
             copy: "Authentic memorabilia — signed, verified, and ready to display.",
             cls: "bg-foreground text-background",
           },
