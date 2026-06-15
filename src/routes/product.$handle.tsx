@@ -64,9 +64,12 @@ function ProductPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-12">
-      <Link to="/shop" className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground mb-8">
-        <ArrowLeft className="w-3 h-3" /> Back to shop
-      </Link>
+      <button
+        onClick={() => window.history.back()}
+        className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground mb-8"
+      >
+        <ArrowLeft className="w-3 h-3" /> Back
+      </button>
 
       <div className="grid md:grid-cols-2 gap-12">
         <div>
