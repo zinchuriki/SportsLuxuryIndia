@@ -16,8 +16,8 @@ export const Route = createFileRoute("/product/$handle")({
   head: ({ loaderData }) => {
     const p = loaderData;
     const image = p?.images?.edges?.[0]?.node?.url;
-    const title = p ? `${p.title} — Elev8` : "Product — Elev8";
-    const desc = p?.description?.slice(0, 160) ?? "Elev8 product";
+    const title = p ? `${p.title} — SportsLuxuryIndia` : "Product — SportsLuxuryIndia";
+    const desc = p?.description?.slice(0, 160) ?? "SportsLuxuryIndia product";
     return {
       meta: [
         { title },
