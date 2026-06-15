@@ -25,7 +25,13 @@ type Filter = "all" | "luxury" | "sport" | "autographed";
 
 function ShopPage() {
   const { data: products } = useSuspenseQuery(productsQueryOptions(undefined, 48));
-  const [filter, setFilter] = useState<Filter>("all");
+  const search = useSearch({ from: "/shop" }) as { category?: string };
+  const category = search.category;
+  const initialFilter: Filter =
+    category === "luxury" || category === "sport" || category === "autographed"
+      ? category
+      : "all";
+  const [filter, setFilter] = useState<Filter>(initialFilter);
 
   const filtered = useMemo(() => {
     if (filter === "all") return products;
