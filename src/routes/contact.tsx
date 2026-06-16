@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Mail, MapPin, Clock } from "lucide-react";
+import { Mail, Phone } from "lucide-react";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -24,11 +24,10 @@ function ContactPage() {
         Concierge requests, press, or partnerships — we read every message and reply within one business day.
       </p>
 
-      <div className="mt-16 grid md:grid-cols-3 gap-6">
+      <div className="mt-16 grid md:grid-cols-2 gap-6 max-w-3xl">
         {[
-          { icon: Mail, t: "Email", c: "hello@elev8.studio" },
-          { icon: MapPin, t: "Studio", c: "Brooklyn · New York" },
-          { icon: Clock, t: "Hours", c: "Mon–Fri · 9–6 EST" },
+          { icon: Mail, t: "Email", c: "rahul.sharma123456789100@gmail.com" },
+          { icon: Phone, t: "Phone", c: "+91 9711009880" },
         ].map((b) => (
           <div key={b.t} className="border border-border rounded-md p-8 bg-card">
             <b.icon className="w-5 h-5 text-ember mb-4" />
