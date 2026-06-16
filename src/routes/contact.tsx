@@ -17,6 +17,19 @@ export const Route = createFileRoute("/contact")({
 });
 
 function ContactPage() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const subject = encodeURIComponent(`Contact from ${name}`);
+    const body = encodeURIComponent(
+      `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
+    );
+    window.location.href = `mailto:rahul.sharma123456789100@gmail.com?subject=${subject}&body=${body}`;
+  };
+
   return (
     <div className="mx-auto max-w-5xl px-6 py-24">
       <p className="text-xs uppercase tracking-widest text-ember mb-4">Contact</p>
@@ -39,14 +52,35 @@ function ContactPage() {
       </div>
 
       <form
-        onSubmit={(e) => e.preventDefault()}
+        onSubmit={handleSubmit}
         className="mt-16 grid gap-4 max-w-2xl"
       >
         <div className="grid md:grid-cols-2 gap-4">
-          <input type="text" placeholder="Name" className="px-4 py-3 bg-card border border-border rounded-sm focus:outline-none focus:border-ember" />
-          <input type="email" placeholder="Email" className="px-4 py-3 bg-card border border-border rounded-sm focus:outline-none focus:border-ember" />
+          <input 
+            type="text" 
+            placeholder="Name" 
+            required
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="px-4 py-3 bg-card border border-border rounded-sm focus:outline-none focus:border-ember" 
+          />
+          <input 
+            type="email" 
+            placeholder="Email" 
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="px-4 py-3 bg-card border border-border rounded-sm focus:outline-none focus:border-ember" 
+          />
         </div>
-        <textarea placeholder="Message" rows={6} className="px-4 py-3 bg-card border border-border rounded-sm focus:outline-none focus:border-ember resize-none" />
+        <textarea 
+          placeholder="Message" 
+          rows={6} 
+          required
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          className="px-4 py-3 bg-card border border-border rounded-sm focus:outline-none focus:border-ember resize-none" 
+        />
         <button type="submit" className="px-8 py-4 gradient-ember text-ember-foreground font-display tracking-widest uppercase text-sm rounded-sm hover:opacity-90 transition self-start">
           Send message
         </button>
