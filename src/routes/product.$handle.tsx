@@ -1,4 +1,4 @@
-import { createFileRoute, notFound, Link } from "@tanstack/react-router";
+import { createFileRoute, notFound, Link, useNavigate } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 import { Loader2, ShoppingBag, ArrowLeft } from "lucide-react";
@@ -8,6 +8,9 @@ import { useCartStore } from "@/stores/cartStore";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/product/$handle")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    variant: typeof search.variant === "string" ? search.variant : undefined,
+  }),
   loader: async ({ context, params }) => {
     const product = await context.queryClient.ensureQueryData(productByHandleQueryOptions(params.handle));
     if (!product) throw notFound();
@@ -35,31 +38,44 @@ export const Route = createFileRoute("/product/$handle")({
 
 function ProductPage() {
   const { handle } = Route.useParams();
+  const { variant: variantParam } = Route.useSearch();
+  const navigate = useNavigate({ from: "/product/$handle" });
   const { data: product } = useSuspenseQuery(productByHandleQueryOptions(handle));
   const addItem = useCartStore((s) => s.addItem);
   const isLoading = useCartStore((s) => s.isLoading);
 
   const variants = product!.variants.edges.map((e) => e.node);
-  const [variantId, setVariantId] = useState(variants[0]?.id);
-  const variant = variants.find((v) => v.id === variantId) ?? variants[0];
+  const variant =
+    (variantParam && variants.find((v) => v.id === variantParam)) || variants[0];
   const images = product!.images.edges.map((e) => e.node);
 
+  // Only filter to the variant-specific image when a variant is explicitly
+  // selected via the URL (?variant=...). Otherwise show the full gallery.
   const displayImages = useMemo(() => {
-    if (variant?.image?.url) {
+    if (variantParam && variant?.image?.url) {
       const match = images.find((img) => img.url === variant.image!.url);
       return match ? [match] : [{ url: variant.image.url, altText: variant.image.altText }];
     }
     return images;
-  }, [variant, images]);
+  }, [variantParam, variant, images]);
 
   const [imgIdx, setImgIdx] = useState(0);
   useEffect(() => {
     setImgIdx(0);
-  }, [variantId]);
+  }, [variantParam]);
 
   if (!product) return null;
 
   const wrapped = { node: product } as Parameters<typeof addItem>[0]["product"] & {};
+
+  const handleSelectVariant = (id: string) => {
+    navigate({
+      to: "/product/$handle",
+      params: { handle },
+      search: { variant: id },
+      replace: false,
+    });
+  };
 
   const handleAdd = async () => {
     if (!variant) return;
@@ -125,10 +141,10 @@ function ProductPage() {
                 {variants.map((v) => (
                   <button
                     key={v.id}
-                    onClick={() => setVariantId(v.id)}
+                    onClick={() => handleSelectVariant(v.id)}
                     disabled={!v.availableForSale}
                     className={`px-3 sm:px-4 py-2 text-[10px] sm:text-xs uppercase tracking-widest rounded-sm border transition ${
-                      v.id === variantId
+                      v.id === variant.id
                         ? "bg-foreground text-background border-foreground"
                         : "border-border text-muted-foreground hover:text-foreground"
                     } ${!v.availableForSale ? "opacity-40 line-through" : ""}`}
