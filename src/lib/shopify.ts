@@ -69,6 +69,7 @@ const PRODUCT_FIELDS = `
       price { amount currencyCode }
       availableForSale
       selectedOptions { name value }
+      image { url altText }
     } }
   }
   options { name values }
