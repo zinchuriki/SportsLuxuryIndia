@@ -47,7 +47,7 @@ function ProductPage() {
   const displayImages = useMemo(() => {
     if (variant?.image?.url) {
       const match = images.find((img) => img.url === variant.image!.url);
-      return match ? [match] : [variant.image];
+      return match ? [match] : [{ url: variant.image.url, altText: variant.image.altText }];
     }
     return images;
   }, [variant, images]);
