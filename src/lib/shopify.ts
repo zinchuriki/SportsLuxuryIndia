@@ -1,10 +1,8 @@
 import { toast } from "sonner";
-
 export const SHOPIFY_API_VERSION = "2025-07";
 export const SHOPIFY_STORE_PERMANENT_DOMAIN = "elevate-ace-net08.myshopify.com";
 export const SHOPIFY_STOREFRONT_URL = `https://${SHOPIFY_STORE_PERMANENT_DOMAIN}/api/${SHOPIFY_API_VERSION}/graphql.json`;
 export const SHOPIFY_STOREFRONT_TOKEN = "5def745bdcdab22d03e738b724ace1e3";
-
 export interface ShopifyProduct {
   node: {
     id: string;
@@ -47,7 +45,8 @@ export async function storefrontApiRequest(query: string, variables: Record<stri
 
   if (response.status === 402) {
     toast.error("Shopify: Payment required", {
-      description: "Your store needs an active Shopify billing plan. Visit https://admin.shopify.com to upgrade.",
+      description:
+        "Your store needs an active Shopify billing plan. Visit https://admin.shopify.com to upgrade.",
     });
     return null;
   }
@@ -55,7 +54,10 @@ export async function storefrontApiRequest(query: string, variables: Record<stri
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
   const data = await response.json();
-  if (data.errors) throw new Error(`Shopify: ${data.errors.map((e: { message: string }) => e.message).join(", ")}`);
+  if (data.errors)
+    throw new Error(
+      `Shopify: ${data.errors.map((e: { message: string }) => e.message).join(", ")}`,
+    );
   return data;
 }
 
