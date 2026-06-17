@@ -86,15 +86,15 @@ function ProductPage() {
       <div className="grid md:grid-cols-2 gap-8 md:gap-12">
         <div>
           <div className="aspect-square overflow-hidden bg-secondary rounded-sm">
-            {images[imgIdx] ? (
-              <img src={images[imgIdx].url} alt={images[imgIdx].altText ?? product.title} className="w-full h-full object-cover" />
+            {displayImages[imgIdx] ? (
+              <img src={displayImages[imgIdx]!.url} alt={displayImages[imgIdx]!.altText ?? product.title} className="w-full h-full object-cover" />
             ) : (
               <div className="w-full h-full flex items-center justify-center text-muted-foreground">No image</div>
             )}
           </div>
-          {images.length > 1 && (
+          {displayImages.length > 1 && (
             <div className="grid grid-cols-5 gap-2 mt-3">
-              {images.map((img, i) => (
+              {displayImages.map((img, i) => (
                 <button
                   key={i}
                   onClick={() => setImgIdx(i)}
