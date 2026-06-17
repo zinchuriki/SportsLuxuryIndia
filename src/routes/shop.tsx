@@ -10,7 +10,11 @@ export const Route = createFileRoute("/shop")({
   head: () => ({
     meta: [
       { title: "Shop — SportsLuxuryIndia" },
-      { name: "description", content: "Browse the full SportsLuxuryIndia edit — luxury, sport, and autographed memorabilia, side by side." },
+      {
+        name: "description",
+        content:
+          "Browse the full SportsLuxuryIndia edit — luxury, sport, and autographed memorabilia, side by side.",
+      },
       { property: "og:title", content: "Shop — SportsLuxuryIndia" },
       { property: "og:description", content: "Browse the full SportsLuxuryIndia edit." },
       { property: "og:url", content: "/shop" },
@@ -28,9 +32,7 @@ function ShopPage() {
   const search = useSearch({ from: "/shop" }) as { category?: string };
   const category = search.category;
   const initialFilter: Filter =
-    category === "luxury" || category === "sport" || category === "autographed"
-      ? category
-      : "all";
+    category === "luxury" || category === "sport" || category === "autographed" ? category : "all";
   const [filter, setFilter] = useState<Filter>(initialFilter);
 
   const filtered = useMemo(() => {
@@ -55,12 +57,19 @@ function ShopPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 py-8 sm:py-12">
-      <Link to="/" className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground mb-4 sm:mb-6">
+      <Link
+        to="/"
+        className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground mb-4 sm:mb-6"
+      >
         <ArrowLeft className="w-3 h-3" /> Back
       </Link>
       <header className="mb-8 sm:mb-12">
-        <p className="text-[10px] sm:text-xs uppercase tracking-widest text-ember mb-2">Collection</p>
-        <h1 className="text-display text-4xl sm:text-6xl md:text-8xl uppercase leading-none">All Products</h1>
+        <p className="text-[10px] sm:text-xs uppercase tracking-widest text-ember mb-2">
+          Collection
+        </p>
+        <h1 className="text-display text-4xl sm:text-6xl md:text-8xl uppercase leading-none">
+          All Products
+        </h1>
       </header>
 
       <div className="flex flex-wrap gap-2 mb-6 sm:mb-10">
@@ -80,7 +89,9 @@ function ShopPage() {
       </div>
 
       {filtered.length === 0 ? (
-        <EmptyState message={products.length === 0 ? "No products yet" : "Nothing matches that filter"} />
+        <EmptyState
+          message={products.length === 0 ? "No products yet" : "Nothing matches that filter"}
+        />
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
           {filtered.map((p) => (
