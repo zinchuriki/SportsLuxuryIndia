@@ -43,7 +43,19 @@ function ProductPage() {
   const [variantId, setVariantId] = useState(variants[0]?.id);
   const variant = variants.find((v) => v.id === variantId) ?? variants[0];
   const images = product!.images.edges.map((e) => e.node);
+
+  const displayImages = useMemo(() => {
+    if (variant?.image?.url) {
+      const match = images.find((img) => img.url === variant.image!.url);
+      return match ? [match] : [variant.image];
+    }
+    return images;
+  }, [variant, images]);
+
   const [imgIdx, setImgIdx] = useState(0);
+  useEffect(() => {
+    setImgIdx(0);
+  }, [variantId]);
 
   if (!product) return null;
 
