@@ -1,6 +1,6 @@
 import { createFileRoute, notFound, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Loader2, ShoppingBag, ArrowLeft } from "lucide-react";
 import { productByHandleQueryOptions } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
