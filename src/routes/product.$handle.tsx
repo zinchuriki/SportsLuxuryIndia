@@ -1,6 +1,6 @@
 import { createFileRoute, notFound, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Loader2, ShoppingBag, ArrowLeft } from "lucide-react";
 import { productByHandleQueryOptions } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
@@ -43,7 +43,19 @@ function ProductPage() {
   const [variantId, setVariantId] = useState(variants[0]?.id);
   const variant = variants.find((v) => v.id === variantId) ?? variants[0];
   const images = product!.images.edges.map((e) => e.node);
+
+  const displayImages = useMemo(() => {
+    if (variant?.image?.url) {
+      const match = images.find((img) => img.url === variant.image!.url);
+      return match ? [match] : [{ url: variant.image.url, altText: variant.image.altText }];
+    }
+    return images;
+  }, [variant, images]);
+
   const [imgIdx, setImgIdx] = useState(0);
+  useEffect(() => {
+    setImgIdx(0);
+  }, [variantId]);
 
   if (!product) return null;
 
@@ -74,15 +86,15 @@ function ProductPage() {
       <div className="grid md:grid-cols-2 gap-8 md:gap-12">
         <div>
           <div className="aspect-square overflow-hidden bg-secondary rounded-sm">
-            {images[imgIdx] ? (
-              <img src={images[imgIdx].url} alt={images[imgIdx].altText ?? product.title} className="w-full h-full object-cover" />
+            {displayImages[imgIdx] ? (
+              <img src={displayImages[imgIdx]!.url} alt={displayImages[imgIdx]!.altText ?? product.title} className="w-full h-full object-cover" />
             ) : (
               <div className="w-full h-full flex items-center justify-center text-muted-foreground">No image</div>
             )}
           </div>
-          {images.length > 1 && (
+          {displayImages.length > 1 && (
             <div className="grid grid-cols-5 gap-2 mt-3">
-              {images.map((img, i) => (
+              {displayImages.map((img, i) => (
                 <button
                   key={i}
                   onClick={() => setImgIdx(i)}
