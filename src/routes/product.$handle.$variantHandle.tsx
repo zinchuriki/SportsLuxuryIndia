@@ -1,6 +1,6 @@
 import { createFileRoute, notFound, useNavigate } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useMemo } from "react";
 import { Loader2, ShoppingBag, ArrowLeft } from "lucide-react";
 import { productByHandleQueryOptions } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
@@ -8,17 +8,27 @@ import { useCartStore } from "@/stores/cartStore";
 import { slugifyVariantTitle } from "@/lib/variants";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/product/$handle")({
+export const Route = createFileRoute("/product/$handle/$variantHandle")({
   loader: async ({ context, params }) => {
-    const product = await context.queryClient.ensureQueryData(productByHandleQueryOptions(params.handle));
+    const product = await context.queryClient.ensureQueryData(
+      productByHandleQueryOptions(params.handle),
+    );
     if (!product) throw notFound();
+    const variant = product.variants.edges.find(
+      (e) => slugifyVariantTitle(e.node.title) === params.variantHandle,
+    )?.node;
+    if (!variant) throw notFound();
     return product;
   },
-  head: ({ loaderData }) => {
+  head: ({ loaderData, params }) => {
     const p = loaderData;
-    const image = p?.images?.edges?.[0]?.node?.url;
-    const title = p ? `${p.title} — SportsLuxuryIndia` : "Product — SportsLuxuryIndia";
-    const desc = p?.description?.slice(0, 160) ?? "SportsLuxuryIndia product";
+    if (!p) return {};
+    const variant = p.variants.edges.find(
+      (e) => slugifyVariantTitle(e.node.title) === params?.variantHandle,
+    )?.node;
+    const image = variant?.image?.url ?? p.images?.edges?.[0]?.node?.url;
+    const title = `${p.title} — ${variant?.title ?? ""} — SportsLuxuryIndia`;
+    const desc = p.description?.slice(0, 160) ?? "SportsLuxuryIndia product";
     return {
       meta: [
         { title },
@@ -26,25 +36,40 @@ export const Route = createFileRoute("/product/$handle")({
         { property: "og:title", content: title },
         { property: "og:description", content: desc },
         { property: "og:type", content: "product" },
-        ...(image ? [{ property: "og:image", content: image }, { name: "twitter:image", content: image }] : []),
+        ...(image
+          ? [
+              { property: "og:image", content: image },
+              { name: "twitter:image", content: image },
+            ]
+          : []),
       ],
-      links: p ? [{ rel: "canonical", href: `/product/${p.handle}` }] : [],
+      links: [
+        { rel: "canonical", href: `/product/${p.handle}/${params?.variantHandle}` },
+      ],
     };
   },
-  component: ProductPage,
+  component: VariantProductPage,
 });
 
-function ProductPage() {
-  const { handle } = Route.useParams();
-  const navigate = useNavigate({ from: "/product/$handle" });
+function VariantProductPage() {
+  const { handle, variantHandle } = Route.useParams();
+  const navigate = useNavigate({ from: "/product/$handle/$variantHandle" });
   const { data: product } = useSuspenseQuery(productByHandleQueryOptions(handle));
   const addItem = useCartStore((s) => s.addItem);
   const isLoading = useCartStore((s) => s.isLoading);
 
   const variants = product!.variants.edges.map((e) => e.node);
-  const variant = variants[0];
+  const variant =
+    variants.find((v) => slugifyVariantTitle(v.title) === variantHandle) ?? variants[0];
   const images = product!.images.edges.map((e) => e.node);
-  const [imgIdx, setImgIdx] = useState(0);
+
+  const displayImages = useMemo(() => {
+    if (variant?.image?.url) {
+      const match = images.find((img) => img.url === variant.image!.url);
+      return match ? [match] : [{ url: variant.image.url, altText: variant.image.altText }];
+    }
+    return images;
+  }, [variant, images]);
 
   if (!product) return null;
   const wrapped = { node: product } as Parameters<typeof addItem>[0]["product"] & {};
@@ -81,48 +106,56 @@ function ProductPage() {
       <div className="grid md:grid-cols-2 gap-8 md:gap-12">
         <div>
           <div className="aspect-square overflow-hidden bg-secondary rounded-sm">
-            {images[imgIdx] ? (
-              <img src={images[imgIdx]!.url} alt={images[imgIdx]!.altText ?? product.title} className="w-full h-full object-cover" />
+            {displayImages[0] ? (
+              <img
+                src={displayImages[0].url}
+                alt={displayImages[0].altText ?? product.title}
+                className="w-full h-full object-cover"
+              />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-muted-foreground">No image</div>
+              <div className="w-full h-full flex items-center justify-center text-muted-foreground">
+                No image
+              </div>
             )}
           </div>
-          {images.length > 1 && (
-            <div className="grid grid-cols-5 gap-2 mt-3">
-              {images.map((img, i) => (
-                <button
-                  key={i}
-                  onClick={() => setImgIdx(i)}
-                  className={`aspect-square overflow-hidden rounded-sm border transition ${i === imgIdx ? "border-ember" : "border-border opacity-60 hover:opacity-100"}`}
-                >
-                  <img src={img.url} alt="" className="w-full h-full object-cover" />
-                </button>
-              ))}
-            </div>
-          )}
         </div>
 
         <div>
           {product.productType && (
-            <p className="text-[10px] sm:text-xs uppercase tracking-widest text-ember mb-2 sm:mb-3">{product.productType}</p>
+            <p className="text-[10px] sm:text-xs uppercase tracking-widest text-ember mb-2 sm:mb-3">
+              {product.productType}
+            </p>
           )}
-          <h1 className="text-display text-3xl sm:text-5xl md:text-6xl uppercase leading-none">{product.title}</h1>
+          <h1 className="text-display text-3xl sm:text-5xl md:text-6xl uppercase leading-none">
+            {product.title}
+          </h1>
+          <p className="mt-2 text-sm uppercase tracking-widest text-muted-foreground">
+            {variant.title}
+          </p>
           <p className="mt-4 sm:mt-6 text-2xl sm:text-3xl text-gold font-semibold">
             {variant.price.currencyCode} {parseFloat(variant.price.amount).toFixed(2)}
           </p>
 
-          <p className="mt-4 sm:mt-6 text-sm sm:text-base text-muted-foreground leading-relaxed whitespace-pre-line">{product.description}</p>
+          <p className="mt-4 sm:mt-6 text-sm sm:text-base text-muted-foreground leading-relaxed whitespace-pre-line">
+            {product.description}
+          </p>
 
           {variants.length > 1 && (
             <div className="mt-6 sm:mt-8">
-              <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">Select option</p>
+              <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
+                Select option
+              </p>
               <div className="flex flex-wrap gap-2">
                 {variants.map((v) => (
                   <button
                     key={v.id}
                     onClick={() => handleSelectVariant(v)}
                     disabled={!v.availableForSale}
-                    className={`px-3 sm:px-4 py-2 text-[10px] sm:text-xs uppercase tracking-widest rounded-sm border transition border-border text-muted-foreground hover:text-foreground ${!v.availableForSale ? "opacity-40 line-through" : ""}`}
+                    className={`px-3 sm:px-4 py-2 text-[10px] sm:text-xs uppercase tracking-widest rounded-sm border transition ${
+                      v.id === variant.id
+                        ? "bg-foreground text-background border-foreground"
+                        : "border-border text-muted-foreground hover:text-foreground"
+                    } ${!v.availableForSale ? "opacity-40 line-through" : ""}`}
                   >
                     {v.title}
                   </button>
@@ -140,7 +173,10 @@ function ProductPage() {
             {isLoading ? (
               <Loader2 className="w-4 h-4 animate-spin" />
             ) : (
-              <><ShoppingBag className="w-4 h-4 mr-2" />Add to bag</>
+              <>
+                <ShoppingBag className="w-4 h-4 mr-2" />
+                Add to bag
+              </>
             )}
           </Button>
         </div>
