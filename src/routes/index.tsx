@@ -5,6 +5,7 @@ import { ArrowRight, Sparkles, Zap } from "lucide-react";
 import { productsQueryOptions } from "@/lib/queries";
 import { ProductCard } from "@/components/ProductCard";
 import { EmptyState } from "@/components/EmptyState";
+import { isListingVariantProduct } from "@/lib/variants";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -17,14 +18,15 @@ export const Route = createFileRoute("/")({
     ],
     links: [{ rel: "canonical", href: "/" }],
   }),
-  loader: ({ context }) => context.queryClient.ensureQueryData(productsQueryOptions(undefined, 8)),
+  loader: ({ context }) => context.queryClient.ensureQueryData(productsQueryOptions(undefined, 24)),
   component: Index,
 });
 
 const MARQUEE_WORDS = ["Performance", "Luxury", "Precision", "Speed", "Craft", "Power", "Heritage", "Edge"];
 
 function Index() {
-  const { data: products } = useSuspenseQuery(productsQueryOptions(undefined, 8));
+  const { data: products } = useSuspenseQuery(productsQueryOptions(undefined, 24));
+  const featuredProducts = products.filter((product) => !isListingVariantProduct(product)).slice(0, 8);
 
   return (
     <div>
@@ -135,11 +137,11 @@ function Index() {
           </Link>
         </div>
 
-        {products.length === 0 ? (
+        {featuredProducts.length === 0 ? (
           <EmptyState message="The drop hasn't landed yet" />
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
-            {products.map((p) => (
+            {featuredProducts.map((p) => (
               <ProductCard key={p.node.id} product={p} />
             ))}
           </div>

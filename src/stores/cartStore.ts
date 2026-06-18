@@ -38,7 +38,7 @@ function generateWhatsAppMessage(items: CartItem[]): string {
   const total = items.reduce((s, i) => s + parseFloat(i.price.amount) * i.quantity, 0);
   const currency = items[0]?.price.currencyCode || "INR";
 
-  const message = `Hello SportsLuxuryIndia! 👋%0A%0AI'd like to place an order:%0A%0A${lines.join("%0A")}%0A%0A*Total: ${currency} ${total.toFixed(2)}*%0A%0APlease confirm availability and payment details.`;
+  const message = `Hello SportsLuxuryIndia! %0A%0AI'd like to place an order:%0A%0A${lines.join("%0A")}%0A%0A*Total: ${currency} ${total.toFixed(2)}*%0A%0APlease confirm availability and payment details.`;
 
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`;
 }

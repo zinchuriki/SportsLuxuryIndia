@@ -1,22 +1,52 @@
-import { createFileRoute, notFound, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, notFound, redirect, useNavigate } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { productByHandleQueryOptions, productsQueryOptions } from "@/lib/queries";
 import { ProductDetailFlipkart } from "@/components/ProductDetailFlipkart";
-import { findProductHandleForVariant } from "@/lib/variants";
+import { findProductHandleForVariant, slugifyVariantTitle } from "@/lib/variants";
 
-export const Route = createFileRoute("/product/$handle")({
+export const Route = createFileRoute("/product/$handle/$variantHandle")({
   loader: async ({ context, params }) => {
     const product = await context.queryClient.ensureQueryData(
       productByHandleQueryOptions(params.handle),
     );
     if (!product) throw notFound();
+
+    const variant = product.variants.edges.find(
+      (e) => slugifyVariantTitle(e.node.title) === params.variantHandle,
+    )?.node;
+    if (!variant) throw notFound();
+
+    const allProducts = await context.queryClient.ensureQueryData(
+      productsQueryOptions(undefined, 48),
+    );
+    const variantTitles = product.variants.edges.map((e) => e.node.title);
+    const productHandle = findProductHandleForVariant(
+      allProducts,
+      product,
+      variantTitles,
+      variant.title,
+    );
+
+    if (productHandle && productHandle !== params.handle) {
+      throw redirect({
+        to: "/product/$handle",
+        params: { handle: productHandle },
+        replace: true,
+      });
+    }
+
     return product;
   },
-  head: ({ loaderData }) => {
+  head: ({ loaderData, params }) => {
     const p = loaderData;
-    const image = p?.images?.edges?.[0]?.node?.url;
-    const title = p ? `${p.title} — SportsLuxuryIndia` : "Product — SportsLuxuryIndia";
-    const desc = p?.description?.slice(0, 160) ?? "SportsLuxuryIndia product";
+    if (!p) return {};
+    const variant = p.variants.edges.find(
+      (e) => slugifyVariantTitle(e.node.title) === params?.variantHandle,
+    )?.node;
+    const image = p.images?.edges?.[0]?.node?.url ?? variant?.image?.url;
+    const title = `${p.title} - SportsLuxuryIndia`;
+    const desc = p.description?.slice(0, 160) ?? "SportsLuxuryIndia product";
+
     return {
       meta: [
         { title },
@@ -31,15 +61,15 @@ export const Route = createFileRoute("/product/$handle")({
             ]
           : []),
       ],
-      links: p ? [{ rel: "canonical", href: `/product/${p.handle}` }] : [],
+      links: [{ rel: "canonical", href: `/product/${p.handle}/${params?.variantHandle}` }],
     };
   },
-  component: ProductPage,
+  component: VariantProductPage,
 });
 
-function ProductPage() {
-  const { handle } = Route.useParams();
-  const navigate = useNavigate({ from: "/product/$handle" });
+function VariantProductPage() {
+  const { handle, variantHandle } = Route.useParams();
+  const navigate = useNavigate({ from: "/product/$handle/$variantHandle" });
   const { data: product } = useSuspenseQuery(productByHandleQueryOptions(handle));
   const { data: allProducts } = useSuspenseQuery(productsQueryOptions(undefined, 48));
 
@@ -67,6 +97,7 @@ function ProductPage() {
     <ProductDetailFlipkart
       product={product}
       allProducts={allProducts}
+      selectedVariantHandle={variantHandle}
       onBack={handleBack}
       onSelectVariant={handleSelectVariant}
     />

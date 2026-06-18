@@ -1,10 +1,11 @@
 import { createFileRoute, Link, useSearch } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Search } from "lucide-react";
 import { productsQueryOptions } from "@/lib/queries";
 import { ProductCard } from "@/components/ProductCard";
 import { EmptyState } from "@/components/EmptyState";
+import { isListingVariantProduct } from "@/lib/variants";
 
 export const Route = createFileRoute("/shop")({
   head: () => ({
@@ -34,10 +35,13 @@ function ShopPage() {
   const initialFilter: Filter =
     category === "luxury" || category === "sport" || category === "autographed" ? category : "all";
   const [filter, setFilter] = useState<Filter>(initialFilter);
+  const [query, setQuery] = useState("");
 
   const filtered = useMemo(() => {
-    if (filter === "all") return products;
-    return products.filter((p) => {
+    const q = query.trim().toLowerCase();
+    const listingProducts = products.filter((p) => !isListingVariantProduct(p));
+    const byFilter = listingProducts.filter((p) => {
+      if (filter === "all") return true;
       const tags = (p.node.tags ?? []).map((t) => t.toLowerCase());
       const type = (p.node.productType ?? "").toLowerCase();
       if (filter === "luxury") return tags.includes("luxury") || type.includes("luxury");
@@ -53,7 +57,22 @@ function ShopPage() {
         );
       return true;
     });
-  }, [products, filter]);
+
+    if (!q) return byFilter;
+
+    return byFilter
+      .filter((p) => {
+        const node = p.node;
+        const inTitle = node.title.toLowerCase().includes(q);
+        const inDesc = (node.description ?? "").toLowerCase().includes(q);
+        const inVariant = node.variants.edges.some((e) => {
+          const v = e.node;
+          if (v.title.toLowerCase().includes(q)) return true;
+          return v.selectedOptions?.some((o) => o.value.toLowerCase().includes(q));
+        });
+        return inTitle || inDesc || inVariant;
+      });
+  }, [products, filter, query]);
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 py-8 sm:py-12">
@@ -71,6 +90,17 @@ function ShopPage() {
           All Products
         </h1>
       </header>
+
+      <div className="mb-6 sm:mb-8 relative max-w-md">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+        <input
+          type="search"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search products or variants (e.g. blue)"
+          className="w-full pl-10 pr-3 py-2 bg-secondary border border-border rounded-sm text-sm focus:outline-none focus:border-ember"
+        />
+      </div>
 
       <div className="flex flex-wrap gap-2 mb-6 sm:mb-10">
         {(["all", "luxury", "sport", "autographed"] as const).map((f) => (
@@ -94,8 +124,8 @@ function ShopPage() {
         />
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
-          {filtered.map((p) => (
-            <ProductCard key={p.node.id} product={p} />
+          {filtered.map((product) => (
+            <ProductCard key={product.node.id} product={product} />
           ))}
         </div>
       )}
