@@ -6,7 +6,13 @@ import { useCartStore } from "@/stores/cartStore";
 import type { ShopifyProduct } from "@/lib/shopify";
 import { toast } from "sonner";
 
-export function ProductCard({ product }: { product: ShopifyProduct }) {
+export function ProductCard({
+  product,
+  variantHandle,
+}: {
+  product: ShopifyProduct;
+  variantHandle?: string;
+}) {
   const addItem = useCartStore((s) => s.addItem);
   const isLoading = useCartStore((s) => s.isLoading);
   const node = product.node;
@@ -36,11 +42,20 @@ export function ProductCard({ product }: { product: ShopifyProduct }) {
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.5, ease: "easeOut" }}
     >
-      <Link
-        to="/product/$handle"
-        params={{ handle: node.handle }}
-        className="group block"
-      >
+      {variantHandle ? (
+        <Link
+          to="/product/$handle/$variantHandle"
+          params={{ handle: node.handle, variantHandle }}
+          className="group block"
+        >
+          <ProductCardInner image={image} node={node} price={price} handleAdd={handleAdd} isLoading={isLoading} variant={variant} />
+        </Link>
+      ) : (
+        <Link
+          to="/product/$handle"
+          params={{ handle: node.handle }}
+          className="group block"
+        >
         <div className="relative aspect-[4/5] overflow-hidden bg-secondary rounded-sm">
           {image ? (
             <img
