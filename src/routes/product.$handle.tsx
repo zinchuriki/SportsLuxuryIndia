@@ -1,11 +1,10 @@
 import { createFileRoute, notFound, useNavigate } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useState } from "react";
 import { Loader2, ShoppingBag, ArrowLeft } from "lucide-react";
-import { productByHandleQueryOptions } from "@/lib/queries";
+import { productByHandleQueryOptions, productsQueryOptions } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/stores/cartStore";
-import { slugifyVariantTitle } from "@/lib/variants";
+import { findProductHandleForVariant } from "@/lib/variants";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/product/$handle")({
@@ -38,21 +37,31 @@ function ProductPage() {
   const { handle } = Route.useParams();
   const navigate = useNavigate({ from: "/product/$handle" });
   const { data: product } = useSuspenseQuery(productByHandleQueryOptions(handle));
+  const { data: allProducts } = useSuspenseQuery(productsQueryOptions(undefined, 48));
   const addItem = useCartStore((s) => s.addItem);
   const isLoading = useCartStore((s) => s.isLoading);
 
   const variants = product!.variants.edges.map((e) => e.node);
   const variant = variants[0];
   const images = product!.images.edges.map((e) => e.node);
-  const [imgIdx, setImgIdx] = useState(0);
+  const displayImage = images[0] ?? variant?.image;
 
   if (!product) return null;
   const wrapped = { node: product } as Parameters<typeof addItem>[0]["product"] & {};
+  const variantTitles = variants.map((v) => v.title);
+
+  const handleBack = () => {
+    navigate({ to: "/shop" });
+  };
 
   const handleSelectVariant = (v: typeof variants[number]) => {
+    const productHandle = findProductHandleForVariant(allProducts, product, variantTitles, v.title);
+    if (!productHandle) return;
+
     navigate({
-      to: "/product/$handle/$variantHandle",
-      params: { handle, variantHandle: slugifyVariantTitle(v.title) },
+      to: "/product/$handle",
+      params: { handle: productHandle },
+      replace: true,
     });
   };
 
@@ -72,7 +81,7 @@ function ProductPage() {
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 py-6 sm:py-12">
       <button
-        onClick={() => window.history.back()}
+        onClick={handleBack}
         className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground mb-6 sm:mb-8"
       >
         <ArrowLeft className="w-3 h-3" /> Back
@@ -81,25 +90,16 @@ function ProductPage() {
       <div className="grid md:grid-cols-2 gap-8 md:gap-12">
         <div>
           <div className="aspect-square overflow-hidden bg-secondary rounded-sm">
-            {images[imgIdx] ? (
-              <img src={images[imgIdx]!.url} alt={images[imgIdx]!.altText ?? product.title} className="w-full h-full object-cover" />
+            {displayImage ? (
+              <img
+                src={displayImage.url}
+                alt={displayImage.altText ?? product.title}
+                className="w-full h-full object-cover"
+              />
             ) : (
               <div className="w-full h-full flex items-center justify-center text-muted-foreground">No image</div>
             )}
           </div>
-          {images.length > 1 && (
-            <div className="grid grid-cols-5 gap-2 mt-3">
-              {images.map((img, i) => (
-                <button
-                  key={i}
-                  onClick={() => setImgIdx(i)}
-                  className={`aspect-square overflow-hidden rounded-sm border transition ${i === imgIdx ? "border-ember" : "border-border opacity-60 hover:opacity-100"}`}
-                >
-                  <img src={img.url} alt="" className="w-full h-full object-cover" />
-                </button>
-              ))}
-            </div>
-          )}
         </div>
 
         <div>
@@ -117,16 +117,30 @@ function ProductPage() {
             <div className="mt-6 sm:mt-8">
               <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">Select option</p>
               <div className="flex flex-wrap gap-2">
-                {variants.map((v) => (
-                  <button
-                    key={v.id}
-                    onClick={() => handleSelectVariant(v)}
-                    disabled={!v.availableForSale}
-                    className={`px-3 sm:px-4 py-2 text-[10px] sm:text-xs uppercase tracking-widest rounded-sm border transition border-border text-muted-foreground hover:text-foreground ${!v.availableForSale ? "opacity-40 line-through" : ""}`}
-                  >
-                    {v.title}
-                  </button>
-                ))}
+                {variants.map((v) => {
+                  const productHandle = findProductHandleForVariant(
+                    allProducts,
+                    product,
+                    variantTitles,
+                    v.title,
+                  );
+                  const isSelected = productHandle === product.handle;
+
+                  return (
+                    <button
+                      key={v.id}
+                      onClick={() => handleSelectVariant(v)}
+                      disabled={!productHandle}
+                      className={`px-3 sm:px-4 py-2 text-[10px] sm:text-xs uppercase tracking-widest rounded-sm border transition ${
+                        isSelected
+                          ? "bg-foreground text-background border-foreground"
+                          : "border-border text-muted-foreground hover:text-foreground"
+                      } ${!productHandle ? "opacity-40 line-through" : ""}`}
+                    >
+                      {v.title}
+                    </button>
+                  );
+                })}
               </div>
             </div>
           )}

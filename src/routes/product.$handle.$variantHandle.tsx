@@ -1,11 +1,10 @@
-import { createFileRoute, notFound, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, notFound, redirect, useNavigate } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useMemo } from "react";
 import { Loader2, ShoppingBag, ArrowLeft } from "lucide-react";
-import { productByHandleQueryOptions } from "@/lib/queries";
+import { productByHandleQueryOptions, productsQueryOptions } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/stores/cartStore";
-import { slugifyVariantTitle } from "@/lib/variants";
+import { findProductHandleForVariant, slugifyVariantTitle } from "@/lib/variants";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/product/$handle/$variantHandle")({
@@ -14,10 +13,31 @@ export const Route = createFileRoute("/product/$handle/$variantHandle")({
       productByHandleQueryOptions(params.handle),
     );
     if (!product) throw notFound();
+
     const variant = product.variants.edges.find(
       (e) => slugifyVariantTitle(e.node.title) === params.variantHandle,
     )?.node;
     if (!variant) throw notFound();
+
+    const allProducts = await context.queryClient.ensureQueryData(
+      productsQueryOptions(undefined, 48),
+    );
+    const variantTitles = product.variants.edges.map((e) => e.node.title);
+    const productHandle = findProductHandleForVariant(
+      allProducts,
+      product,
+      variantTitles,
+      variant.title,
+    );
+
+    if (productHandle && productHandle !== params.handle) {
+      throw redirect({
+        to: "/product/$handle",
+        params: { handle: productHandle },
+        replace: true,
+      });
+    }
+
     return product;
   },
   head: ({ loaderData, params }) => {
@@ -26,9 +46,10 @@ export const Route = createFileRoute("/product/$handle/$variantHandle")({
     const variant = p.variants.edges.find(
       (e) => slugifyVariantTitle(e.node.title) === params?.variantHandle,
     )?.node;
-    const image = variant?.image?.url ?? p.images?.edges?.[0]?.node?.url;
-    const title = `${p.title} — ${variant?.title ?? ""} — SportsLuxuryIndia`;
+    const image = p.images?.edges?.[0]?.node?.url ?? variant?.image?.url;
+    const title = `${p.title} - SportsLuxuryIndia`;
     const desc = p.description?.slice(0, 160) ?? "SportsLuxuryIndia product";
+
     return {
       meta: [
         { title },
@@ -43,9 +64,7 @@ export const Route = createFileRoute("/product/$handle/$variantHandle")({
             ]
           : []),
       ],
-      links: [
-        { rel: "canonical", href: `/product/${p.handle}/${params?.variantHandle}` },
-      ],
+      links: [{ rel: "canonical", href: `/product/${p.handle}/${params?.variantHandle}` }],
     };
   },
   component: VariantProductPage,
@@ -55,6 +74,7 @@ function VariantProductPage() {
   const { handle, variantHandle } = Route.useParams();
   const navigate = useNavigate({ from: "/product/$handle/$variantHandle" });
   const { data: product } = useSuspenseQuery(productByHandleQueryOptions(handle));
+  const { data: allProducts } = useSuspenseQuery(productsQueryOptions(undefined, 48));
   const addItem = useCartStore((s) => s.addItem);
   const isLoading = useCartStore((s) => s.isLoading);
 
@@ -62,22 +82,24 @@ function VariantProductPage() {
   const variant =
     variants.find((v) => slugifyVariantTitle(v.title) === variantHandle) ?? variants[0];
   const images = product!.images.edges.map((e) => e.node);
-
-  const displayImages = useMemo(() => {
-    if (variant?.image?.url) {
-      const match = images.find((img) => img.url === variant.image!.url);
-      return match ? [match] : [{ url: variant.image.url, altText: variant.image.altText }];
-    }
-    return images;
-  }, [variant, images]);
+  const displayImage = images[0] ?? variant?.image;
 
   if (!product) return null;
   const wrapped = { node: product } as Parameters<typeof addItem>[0]["product"] & {};
+  const variantTitles = variants.map((v) => v.title);
+
+  const handleBack = () => {
+    navigate({ to: "/shop" });
+  };
 
   const handleSelectVariant = (v: typeof variants[number]) => {
+    const productHandle = findProductHandleForVariant(allProducts, product, variantTitles, v.title);
+    if (!productHandle) return;
+
     navigate({
-      to: "/product/$handle/$variantHandle",
-      params: { handle, variantHandle: slugifyVariantTitle(v.title) },
+      to: "/product/$handle",
+      params: { handle: productHandle },
+      replace: true,
     });
   };
 
@@ -97,7 +119,7 @@ function VariantProductPage() {
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 py-6 sm:py-12">
       <button
-        onClick={() => window.history.back()}
+        onClick={handleBack}
         className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground mb-6 sm:mb-8"
       >
         <ArrowLeft className="w-3 h-3" /> Back
@@ -106,10 +128,10 @@ function VariantProductPage() {
       <div className="grid md:grid-cols-2 gap-8 md:gap-12">
         <div>
           <div className="aspect-square overflow-hidden bg-secondary rounded-sm">
-            {displayImages[0] ? (
+            {displayImage ? (
               <img
-                src={displayImages[0].url}
-                alt={displayImages[0].altText ?? product.title}
+                src={displayImage.url}
+                alt={displayImage.altText ?? product.title}
                 className="w-full h-full object-cover"
               />
             ) : (
@@ -146,20 +168,30 @@ function VariantProductPage() {
                 Select option
               </p>
               <div className="flex flex-wrap gap-2">
-                {variants.map((v) => (
-                  <button
-                    key={v.id}
-                    onClick={() => handleSelectVariant(v)}
-                    disabled={!v.availableForSale}
-                    className={`px-3 sm:px-4 py-2 text-[10px] sm:text-xs uppercase tracking-widest rounded-sm border transition ${
-                      v.id === variant.id
-                        ? "bg-foreground text-background border-foreground"
-                        : "border-border text-muted-foreground hover:text-foreground"
-                    } ${!v.availableForSale ? "opacity-40 line-through" : ""}`}
-                  >
-                    {v.title}
-                  </button>
-                ))}
+                {variants.map((v) => {
+                  const productHandle = findProductHandleForVariant(
+                    allProducts,
+                    product,
+                    variantTitles,
+                    v.title,
+                  );
+                  const isSelected = productHandle === product.handle;
+
+                  return (
+                    <button
+                      key={v.id}
+                      onClick={() => handleSelectVariant(v)}
+                      disabled={!productHandle}
+                      className={`px-3 sm:px-4 py-2 text-[10px] sm:text-xs uppercase tracking-widest rounded-sm border transition ${
+                        isSelected
+                          ? "bg-foreground text-background border-foreground"
+                          : "border-border text-muted-foreground hover:text-foreground"
+                      } ${!productHandle ? "opacity-40 line-through" : ""}`}
+                    >
+                      {v.title}
+                    </button>
+                  );
+                })}
               </div>
             </div>
           )}

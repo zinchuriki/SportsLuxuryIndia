@@ -5,7 +5,7 @@ import { ArrowLeft, Search } from "lucide-react";
 import { productsQueryOptions } from "@/lib/queries";
 import { ProductCard } from "@/components/ProductCard";
 import { EmptyState } from "@/components/EmptyState";
-import { slugifyVariantTitle } from "@/lib/variants";
+import { isListingVariantProduct } from "@/lib/variants";
 
 export const Route = createFileRoute("/shop")({
   head: () => ({
@@ -39,7 +39,8 @@ function ShopPage() {
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    const byFilter = products.filter((p) => {
+    const listingProducts = products.filter((p) => !isListingVariantProduct(p));
+    const byFilter = listingProducts.filter((p) => {
       if (filter === "all") return true;
       const tags = (p.node.tags ?? []).map((t) => t.toLowerCase());
       const type = (p.node.productType ?? "").toLowerCase();
@@ -57,26 +58,20 @@ function ShopPage() {
       return true;
     });
 
-    if (!q) return byFilter.map((p) => ({ product: p, matchedVariant: undefined as undefined | string }));
+    if (!q) return byFilter;
 
     return byFilter
-      .map((p) => {
+      .filter((p) => {
         const node = p.node;
         const inTitle = node.title.toLowerCase().includes(q);
         const inDesc = (node.description ?? "").toLowerCase().includes(q);
-        const matchedVariantNode = node.variants.edges.find((e) => {
+        const inVariant = node.variants.edges.some((e) => {
           const v = e.node;
           if (v.title.toLowerCase().includes(q)) return true;
           return v.selectedOptions?.some((o) => o.value.toLowerCase().includes(q));
-        })?.node;
-        const matches = inTitle || inDesc || !!matchedVariantNode;
-        if (!matches) return null;
-        return {
-          product: p,
-          matchedVariant: matchedVariantNode ? slugifyVariantTitle(matchedVariantNode.title) : undefined,
-        };
-      })
-      .filter((x): x is { product: typeof products[number]; matchedVariant: string | undefined } => x !== null);
+        });
+        return inTitle || inDesc || inVariant;
+      });
   }, [products, filter, query]);
 
   return (
@@ -129,8 +124,8 @@ function ShopPage() {
         />
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
-          {filtered.map(({ product, matchedVariant }) => (
-            <ProductCard key={product.node.id} product={product} variantHandle={matchedVariant} />
+          {filtered.map((product) => (
+            <ProductCard key={product.node.id} product={product} />
           ))}
         </div>
       )}
