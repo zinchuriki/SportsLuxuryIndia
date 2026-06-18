@@ -5,28 +5,42 @@ import { ArrowRight, Sparkles, Zap } from "lucide-react";
 import { productsQueryOptions } from "@/lib/queries";
 import { ProductCard } from "@/components/ProductCard";
 import { EmptyState } from "@/components/EmptyState";
-import { isListingVariantProduct } from "@/lib/variants";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "SportsLuxuryIndia — Luxury, Sport & Autographed" },
-      { name: "description", content: "Curated luxury objects, elite sports gear, and authentic autographed memorabilia. A bold athletic-luxe edit, built for the way you move." },
+      {
+        name: "description",
+        content:
+          "Curated luxury objects, elite sports gear, and authentic autographed memorabilia. A bold athletic-luxe edit, built for the way you move.",
+      },
       { property: "og:title", content: "SportsLuxuryIndia — Luxury, Sport & Autographed" },
-      { property: "og:description", content: "Curated luxury, sport, and authentic autographed memorabilia." },
+      {
+        property: "og:description",
+        content: "Curated luxury, sport, and authentic autographed memorabilia.",
+      },
       { property: "og:url", content: "/" },
     ],
     links: [{ rel: "canonical", href: "/" }],
   }),
-  loader: ({ context }) => context.queryClient.ensureQueryData(productsQueryOptions(undefined, 24)),
+  loader: ({ context }) => context.queryClient.ensureQueryData(productsQueryOptions(undefined, 8)),
   component: Index,
 });
 
-const MARQUEE_WORDS = ["Performance", "Luxury", "Precision", "Speed", "Craft", "Power", "Heritage", "Edge"];
+const MARQUEE_WORDS = [
+  "Performance",
+  "Luxury",
+  "Precision",
+  "Speed",
+  "Craft",
+  "Power",
+  "Heritage",
+  "Edge",
+];
 
 function Index() {
-  const { data: products } = useSuspenseQuery(productsQueryOptions(undefined, 24));
-  const featuredProducts = products.filter((product) => !isListingVariantProduct(product)).slice(0, 8);
+  const { data: products } = useSuspenseQuery(productsQueryOptions(undefined, 8));
 
   return (
     <div>
@@ -48,12 +62,13 @@ function Index() {
               New season · Limited drops
             </div>
             <h1 className="text-display text-[16vw] md:text-[10rem] uppercase leading-[0.85]">
-              Move<br />
+              Move
+              <br />
               <span className="text-ember">Differently.</span>
             </h1>
             <p className="mt-6 sm:mt-8 text-sm sm:text-lg md:text-xl text-muted-foreground max-w-2xl">
-              A curated edit where luxury meets performance. Objects engineered for the way you train, travel, and live —
-              with the heft of heritage and the bite of the modern world.
+              A curated edit where luxury meets performance. Objects engineered for the way you
+              train, travel, and live — with the heft of heritage and the bite of the modern world.
             </p>
             <div className="mt-8 sm:mt-10 flex flex-wrap gap-4">
               <Link
@@ -70,11 +85,16 @@ function Index() {
         {/* Marquee */}
         <div className="border-y border-border overflow-hidden bg-card/50">
           <div className="flex animate-marquee whitespace-nowrap py-3 sm:py-4">
-            {[...MARQUEE_WORDS, ...MARQUEE_WORDS, ...MARQUEE_WORDS, ...MARQUEE_WORDS].map((word, i) => (
-              <span key={i} className="font-display text-lg sm:text-3xl uppercase tracking-[0.25em] sm:tracking-[0.3em] mx-5 sm:mx-8 text-muted-foreground">
-                {word} <span className="text-ember mx-3 sm:mx-4">/</span>
-              </span>
-            ))}
+            {[...MARQUEE_WORDS, ...MARQUEE_WORDS, ...MARQUEE_WORDS, ...MARQUEE_WORDS].map(
+              (word, i) => (
+                <span
+                  key={i}
+                  className="font-display text-lg sm:text-3xl uppercase tracking-[0.25em] sm:tracking-[0.3em] mx-5 sm:mx-8 text-muted-foreground"
+                >
+                  {word} <span className="text-ember mx-3 sm:mx-4">/</span>
+                </span>
+              ),
+            )}
           </div>
         </div>
       </section>
@@ -113,7 +133,9 @@ function Index() {
               <Zap className="w-3 h-3 sm:w-4 sm:h-4 inline mr-1" />
               {w.label}
             </div>
-            <h3 className="text-display text-3xl sm:text-5xl md:text-6xl uppercase leading-none">{w.title}</h3>
+            <h3 className="text-display text-3xl sm:text-5xl md:text-6xl uppercase leading-none">
+              {w.title}
+            </h3>
             <p className="mt-3 sm:mt-4 max-w-md text-sm sm:text-base opacity-90">{w.copy}</p>
             <Link
               to="/shop"
@@ -129,19 +151,24 @@ function Index() {
       <section className="mx-auto max-w-7xl px-4 sm:px-6 py-8 sm:py-12">
         <div className="flex items-end justify-between mb-8 sm:mb-12 flex-wrap gap-4">
           <div>
-            <p className="text-[10px] sm:text-xs uppercase tracking-widest text-ember mb-2">The Edit</p>
+            <p className="text-[10px] sm:text-xs uppercase tracking-widest text-ember mb-2">
+              The Edit
+            </p>
             <h2 className="text-display text-4xl sm:text-5xl md:text-7xl uppercase">Crossover.</h2>
           </div>
-          <Link to="/shop" className="text-xs sm:text-sm uppercase tracking-widest text-muted-foreground hover:text-foreground inline-flex items-center gap-2">
+          <Link
+            to="/shop"
+            className="text-xs sm:text-sm uppercase tracking-widest text-muted-foreground hover:text-foreground inline-flex items-center gap-2"
+          >
             View all <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
 
-        {featuredProducts.length === 0 ? (
+        {products.length === 0 ? (
           <EmptyState message="The drop hasn't landed yet" />
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
-            {featuredProducts.map((p) => (
+            {products.map((p) => (
               <ProductCard key={p.node.id} product={p} />
             ))}
           </div>
@@ -152,9 +179,21 @@ function Index() {
       <section className="border-t border-border mt-16 sm:mt-24 bg-card">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 py-12 sm:py-20 grid md:grid-cols-3 gap-8 sm:gap-10 text-center md:text-left">
           {[
-            { k: "01", t: "Curated, not assembled", c: "Every piece earns its place — no filler, no trend-chasing." },
-            { k: "02", t: "Made to be used hard", c: "Lab-tested. Trail-proven. Backed by a lifetime promise." },
-            { k: "03", t: "Direct from the maker", c: "We work hand-in-hand with the studios behind the icons." },
+            {
+              k: "01",
+              t: "Curated, not assembled",
+              c: "Every piece earns its place — no filler, no trend-chasing.",
+            },
+            {
+              k: "02",
+              t: "Made to be used hard",
+              c: "Lab-tested. Trail-proven. Backed by a lifetime promise.",
+            },
+            {
+              k: "03",
+              t: "Direct from the maker",
+              c: "We work hand-in-hand with the studios behind the icons.",
+            },
           ].map((b) => (
             <div key={b.k}>
               <div className="text-display text-ember text-3xl sm:text-4xl mb-2 sm:mb-3">{b.k}</div>
