@@ -87,7 +87,7 @@ function ProductPage() {
         <div>
           <div className="aspect-square overflow-hidden bg-secondary rounded-sm">
             {displayImages[imgIdx] ? (
-              <img src={displayImages[imgIdx]!.url} alt={displayImages[imgIdx]!.altText ?? product.title} className="w-full h-full object-contain" />
+              <img src={displayImages[imgIdx]!.url} alt={displayImages[imgIdx]!.altText ?? product.title} className="w-full h-full object-cover" />
             ) : (
               <div className="w-full h-full flex items-center justify-center text-muted-foreground">No image</div>
             )}
@@ -98,9 +98,9 @@ function ProductPage() {
                 <button
                   key={i}
                   onClick={() => setImgIdx(i)}
-                  className={`aspect-square overflow-hidden rounded-sm border bg-secondary transition ${i === imgIdx ? "border-ember" : "border-border opacity-60 hover:opacity-100"}`}
+                  className={`aspect-square overflow-hidden rounded-sm border transition ${i === imgIdx ? "border-ember" : "border-border opacity-60 hover:opacity-100"}`}
                 >
-                  <img src={img.url} alt="" className="w-full h-full object-contain" />
+                  <img src={img.url} alt="" className="w-full h-full object-cover" />
                 </button>
               ))}
             </div>
