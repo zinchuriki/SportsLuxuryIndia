@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { ArrowRight, Sparkles, Zap } from "lucide-react";
@@ -203,6 +204,7 @@ function Index() {
           ))}
         </div>
       </section>
+      <SpeedInsights
     </div>
   );
 }
