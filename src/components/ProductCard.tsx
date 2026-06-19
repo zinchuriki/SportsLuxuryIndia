@@ -1,3 +1,4 @@
+// Product card component
 import { Link } from "@tanstack/react-router";
 import { Loader2, Plus } from "lucide-react";
 import { motion } from "framer-motion";
@@ -78,7 +79,7 @@ export function ProductCard({ product }: { product: ShopifyProduct }) {
             )}
           </div>
           <p className="text-sm sm:text-base font-semibold text-gold whitespace-nowrap">
-            {price.currencyCode} {parseFloat(price.amount).toFixed(2)}
+            {price.currencyCode} {Number.parseFloat(price.amount).toFixed(2)}
           </p>
         </div>
       </Link>
