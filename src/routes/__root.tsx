@@ -52,7 +52,10 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
         <p className="mt-2 text-sm text-muted-foreground">Try again or head home.</p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
-            onClick={() => { router.invalidate(); reset(); }}
+            onClick={() => {
+              router.invalidate();
+              reset();
+            }}
             className="rounded-sm gradient-ember text-ember-foreground px-6 py-3 font-display tracking-widest uppercase text-sm"
           >
             Try again
@@ -75,23 +78,46 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "SportsLuxuryIndia — Luxury, Sport & Autographed" },
-      { name: "description", content: "Curated luxury objects, elite sports gear, and authentic autographed memorabilia. Athletic-luxe, built for India." },
+      {
+        name: "description",
+        content:
+          "Curated luxury objects, elite sports gear, and authentic autographed memorabilia. Athletic-luxe, built for India.",
+      },
       { name: "author", content: "SportsLuxuryIndia" },
       { property: "og:site_name", content: "SportsLuxuryIndia" },
       { property: "og:title", content: "SportsLuxuryIndia — Luxury, Sport & Autographed" },
-      { property: "og:description", content: "Curated luxury objects, elite sports gear, and authentic autographed memorabilia. Athletic-luxe, built for India." },
+      {
+        property: "og:description",
+        content:
+          "Curated luxury objects, elite sports gear, and authentic autographed memorabilia. Athletic-luxe, built for India.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "SportsLuxuryIndia — Luxury, Sport & Autographed" },
-      { name: "twitter:description", content: "Curated luxury objects, elite sports gear, and authentic autographed memorabilia. Athletic-luxe, built for India." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/57f214df-f1d1-4b7c-bb3f-04b5cd7b9254/id-preview-c28328ea--c09cb4a7-bc9b-455a-943b-253834c56438.lovable.app-1781523440059.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/57f214df-f1d1-4b7c-bb3f-04b5cd7b9254/id-preview-c28328ea--c09cb4a7-bc9b-455a-943b-253834c56438.lovable.app-1781523440059.png" },
+      {
+        name: "twitter:description",
+        content:
+          "Curated luxury objects, elite sports gear, and authentic autographed memorabilia. Athletic-luxe, built for India.",
+      },
+      {
+        property: "og:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/57f214df-f1d1-4b7c-bb3f-04b5cd7b9254/id-preview-c28328ea--c09cb4a7-bc9b-455a-943b-253834c56438.lovable.app-1781523440059.png",
+      },
+      {
+        name: "twitter:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/57f214df-f1d1-4b7c-bb3f-04b5cd7b9254/id-preview-c28328ea--c09cb4a7-bc9b-455a-943b-253834c56438.lovable.app-1781523440059.png",
+      },
     ],
     links: [
-      { rel: "icon", type: "image/png", href: "/favicon.png" },
+      { rel: "icon", type: "image/jpeg", href: "/public/favicon.jpeg" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap",
+      },
       { rel: "stylesheet", href: appCss },
     ],
   }),
