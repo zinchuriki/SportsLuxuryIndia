@@ -14,6 +14,6 @@ export default defineConfig({
   },
   // Force-enable Nitro and explicitly set Netlify as the deployment target
   nitro: {
-    preset: "netlify",
+    preset: "vercel",
   },
 });
