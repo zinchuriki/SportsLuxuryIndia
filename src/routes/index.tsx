@@ -204,7 +204,7 @@ function Index() {
           ))}
         </div>
       </section>
-      <SpeedInsights
+      <SpeedInsights />
     </div>
   );
 }
