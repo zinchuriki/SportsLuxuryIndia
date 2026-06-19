@@ -1,6 +1,6 @@
 import { createFileRoute, notFound, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import { Loader2, ShoppingBag, ArrowLeft } from "lucide-react";
 import { productByHandleQueryOptions } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
@@ -43,19 +43,7 @@ function ProductPage() {
   const [variantId, setVariantId] = useState(variants[0]?.id);
   const variant = variants.find((v) => v.id === variantId) ?? variants[0];
   const images = product!.images.edges.map((e) => e.node);
-
-  const displayImages = useMemo(() => {
-    if (variant?.image?.url) {
-      const match = images.find((img) => img.url === variant.image!.url);
-      return match ? [match] : [{ url: variant.image.url, altText: variant.image.altText }];
-    }
-    return images;
-  }, [variant, images]);
-
-  const [imgIdx, setImgIdx] = useState(0);
-  useEffect(() => {
-    setImgIdx(0);
-  }, [variantId]);
+  const [selectedImage, setSelectedImage] = useState(images[0] ?? null);
 
   if (!product) return null;
 
@@ -85,22 +73,30 @@ function ProductPage() {
 
       <div className="grid md:grid-cols-2 gap-8 md:gap-12">
         <div>
-          <div className="aspect-square overflow-hidden bg-secondary rounded-sm">
-            {displayImages[imgIdx] ? (
-              <img src={displayImages[imgIdx]!.url} alt={displayImages[imgIdx]!.altText ?? product.title} className="w-full h-full object-cover" />
+          <div className="aspect-square overflow-hidden bg-secondary rounded-sm flex items-center justify-center">
+            {selectedImage ? (
+              <img
+                src={selectedImage.url}
+                alt={selectedImage.altText ?? product.title}
+                className="w-full h-full object-contain"
+              />
             ) : (
               <div className="w-full h-full flex items-center justify-center text-muted-foreground">No image</div>
             )}
           </div>
-          {displayImages.length > 1 && (
-            <div className="grid grid-cols-5 gap-2 mt-3">
-              {displayImages.map((img, i) => (
+          {images.length > 1 && (
+            <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
+              {images.map((img) => (
                 <button
-                  key={i}
-                  onClick={() => setImgIdx(i)}
-                  className={`aspect-square overflow-hidden rounded-sm border transition ${i === imgIdx ? "border-ember" : "border-border opacity-60 hover:opacity-100"}`}
+                  key={img.url}
+                  onClick={() => setSelectedImage(img)}
+                  className={`h-16 w-16 shrink-0 overflow-hidden rounded-sm border bg-secondary transition sm:h-20 sm:w-20 ${
+                    selectedImage?.url === img.url
+                      ? "border-foreground ring-1 ring-foreground"
+                      : "border-border opacity-60 hover:opacity-100"
+                  }`}
                 >
-                  <img src={img.url} alt="" className="w-full h-full object-cover" />
+                  <img src={img.url} alt="" className="h-full w-full object-contain" />
                 </button>
               ))}
             </div>
