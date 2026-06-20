@@ -37,8 +37,9 @@ export function SiteHeader() {
             </SheetTrigger>
             <SheetContent side="left" className="w-72 sm:w-80">
               <SheetHeader>
-                <SheetTitle className="text-left font-display text-lg sm:text-xl tracking-[0.12em] uppercase">
-                  Sports<span className="text-ember">Luxury</span>India
+                <SheetTitle className="text-left font-display text-lg sm:text-xl tracking-[0.12em] uppercase flex items-center gap-2">
+                  <span>Sports<span className="text-ember">Luxury</span><span className="text-india drop-shadow-sm">India</span></span>
+                  <img src="https://upload.wikimedia.org/wikipedia/en/4/41/Flag_of_India.svg" alt="India Flag" className="h-4 sm:h-5 w-auto animate-flag shrink-0 rounded-sm" />
                 </SheetTitle>
               </SheetHeader>
               <nav className="mt-8 flex flex-col gap-1">
@@ -74,10 +75,11 @@ export function SiteHeader() {
           </Sheet>
         </div>
 
-        <Link to="/" className="flex items-center justify-center min-w-0">
+        <Link to="/" className="flex items-center justify-center min-w-0 gap-2">
           <span className="font-display text-sm sm:text-2xl tracking-[0.12em] sm:tracking-[0.2em] uppercase truncate">
-            Sports<span className="text-ember">Luxury</span>India
+            Sports<span className="text-ember">Luxury</span><span className="text-india drop-shadow-sm">India</span>
           </span>
+          <img src="https://upload.wikimedia.org/wikipedia/en/4/41/Flag_of_India.svg" alt="India Flag" className="h-3 sm:h-5 w-auto animate-flag shrink-0 rounded-sm" />
         </Link>
 
         <CartDrawer />

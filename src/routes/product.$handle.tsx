@@ -42,8 +42,10 @@ function ProductPage() {
   const variants = product!.variants.edges.map((e) => e.node);
   const [variantId, setVariantId] = useState(variants[0]?.id);
   const variant = variants.find((v) => v.id === variantId) ?? variants[0];
-  const images = product!.images.edges.map((e) => e.node);
-  const [selectedImage, setSelectedImage] = useState(images[0] ?? null);
+  const allImages = product!.images.edges.map((e) => e.node);
+  const hasMultipleVariants = variants.length > 1;
+  const displayImages = hasMultipleVariants && variant.image ? [variant.image] : allImages;
+  const [selectedImage, setSelectedImage] = useState(variant.image ?? allImages[0] ?? null);
 
   if (!product) return null;
 
@@ -84,9 +86,9 @@ function ProductPage() {
               <div className="w-full h-full flex items-center justify-center text-muted-foreground">No image</div>
             )}
           </div>
-          {images.length > 1 && (
+          {displayImages.length > 1 && (
             <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
-              {images.map((img) => (
+              {displayImages.map((img) => (
                 <button
                   key={img.url}
                   onClick={() => setSelectedImage(img)}
@@ -121,7 +123,14 @@ function ProductPage() {
                 {variants.map((v) => (
                   <button
                     key={v.id}
-                    onClick={() => setVariantId(v.id)}
+                    onClick={() => {
+                      setVariantId(v.id);
+                      if (v.image) {
+                        setSelectedImage(v.image);
+                      } else {
+                        setSelectedImage(allImages[0] ?? null);
+                      }
+                    }}
                     disabled={!v.availableForSale}
                     className={`px-3 sm:px-4 py-2 text-[10px] sm:text-xs uppercase tracking-widest rounded-sm border transition ${
                       v.id === variantId
