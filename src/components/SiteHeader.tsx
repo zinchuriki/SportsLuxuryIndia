@@ -1,5 +1,5 @@
-import { Link, useRouterState } from "@tanstack/react-router";
-import { Menu, X } from "lucide-react";
+import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
+import { Menu, X, Search } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -24,6 +24,16 @@ const shopCategories = [
 
 export function SiteHeader() {
   const currentPath = useRouterState({ select: (s) => s.location.pathname });
+  const navigate = useNavigate();
+
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const q = formData.get("q") as string;
+    if (q.trim()) {
+      navigate({ to: "/shop", search: { q } });
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50 backdrop-blur-md bg-background/80 border-b border-border">
@@ -43,6 +53,15 @@ export function SiteHeader() {
                 </SheetTitle>
               </SheetHeader>
               <nav className="mt-8 flex flex-col gap-1">
+                <form onSubmit={handleSearch} className="relative mb-4">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <input
+                    name="q"
+                    type="search"
+                    placeholder="Search products..."
+                    className="w-full h-10 pl-9 pr-4 rounded-md border border-input bg-background/50 text-sm outline-none focus-visible:ring-1 focus-visible:ring-ring transition-all"
+                  />
+                </form>
                 {nav.map((item) => (
                   <SheetClose asChild key={item.to}>
                     <Link
@@ -82,7 +101,18 @@ export function SiteHeader() {
           <img src="https://upload.wikimedia.org/wikipedia/en/4/41/Flag_of_India.svg" alt="India Flag" className="h-3 sm:h-5 w-auto animate-flag shrink-0 rounded-sm" />
         </Link>
 
-        <CartDrawer />
+        <div className="flex items-center justify-end gap-2">
+          <form onSubmit={handleSearch} className="relative hidden md:block">
+            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <input
+              name="q"
+              type="search"
+              placeholder="Search..."
+              className="w-32 lg:w-48 h-9 pl-9 pr-3 rounded-full border border-input bg-background/50 text-sm outline-none focus-visible:ring-1 focus-visible:ring-ring transition-all"
+            />
+          </form>
+          <CartDrawer />
+        </div>
       </div>
     </header>
   );

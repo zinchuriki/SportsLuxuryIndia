@@ -7,6 +7,13 @@ import { ProductCard } from "@/components/ProductCard";
 import { EmptyState } from "@/components/EmptyState";
 
 export const Route = createFileRoute("/shop")({
+  validateSearch: (search: Record<string, unknown>): { category?: string; q?: string } => {
+    return {
+      category: search.category as string | undefined,
+      q: search.q as string | undefined,
+    }
+  },
+  loaderDeps: ({ search }) => ({ q: search.q }),
   head: () => ({
     meta: [
       { title: "Shop — SportsLuxuryIndia" },
@@ -21,15 +28,16 @@ export const Route = createFileRoute("/shop")({
     ],
     links: [{ rel: "canonical", href: "/shop" }],
   }),
-  loader: ({ context }) => context.queryClient.ensureQueryData(productsQueryOptions(undefined, 48)),
+  loader: ({ context, deps }) => context.queryClient.ensureQueryData(productsQueryOptions(deps.q, 48)),
   component: ShopPage,
 });
 
 type Filter = "all" | "luxury" | "sport" | "autographed";
 
 function ShopPage() {
-  const { data: products } = useSuspenseQuery(productsQueryOptions(undefined, 48));
-  const search = useSearch({ from: "/shop" }) as { category?: string };
+  const { q } = Route.useLoaderDeps();
+  const { data: products } = useSuspenseQuery(productsQueryOptions(q, 48));
+  const search = Route.useSearch();
   const category = search.category;
   const initialFilter: Filter =
     category === "luxury" || category === "sport" || category === "autographed" ? category : "all";
@@ -65,10 +73,10 @@ function ShopPage() {
       </Link>
       <header className="mb-8 sm:mb-12">
         <p className="text-[10px] sm:text-xs uppercase tracking-widest text-ember mb-2">
-          Collection
+          {search.q ? "Search Results" : "Collection"}
         </p>
-        <h1 className="text-display text-4xl sm:text-6xl md:text-8xl uppercase leading-none">
-          All Products
+        <h1 className="text-display text-4xl sm:text-6xl md:text-8xl uppercase leading-none truncate">
+          {search.q ? `"${search.q}"` : "All Products"}
         </h1>
       </header>
 
