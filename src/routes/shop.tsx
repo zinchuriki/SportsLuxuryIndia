@@ -34,9 +34,40 @@ export const Route = createFileRoute("/shop")({
 
 type Filter = "all" | "luxury" | "sport" | "autographed";
 
+function levenshtein(a: string, b: string): number {
+  if (a.length === 0) return b.length;
+  if (b.length === 0) return a.length;
+  const matrix = Array.from({ length: b.length + 1 }, (_, i) => [i]);
+  for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
+  for (let i = 1; i <= b.length; i++) {
+    for (let j = 1; j <= a.length; j++) {
+      if (b[i - 1] === a[j - 1]) matrix[i][j] = matrix[i - 1][j - 1];
+      else matrix[i][j] = Math.min(matrix[i - 1][j - 1] + 1, matrix[i][j - 1] + 1, matrix[i - 1][j] + 1);
+    }
+  }
+  return matrix[b.length][a.length];
+}
+
+function fuzzyMatch(query: string, text: string): boolean {
+  const q = query.toLowerCase().trim();
+  const t = text.toLowerCase();
+  if (t.includes(q)) return true;
+  
+  const qWords = q.split(/\s+/).filter(Boolean);
+  if (qWords.length === 0) return true;
+  const tWords = t.split(/[\s,.\-_]+/).filter(Boolean);
+  
+  return qWords.every(qw => {
+    if (tWords.some(tw => tw.includes(qw))) return true;
+    const maxDist = qw.length > 5 ? 2 : (qw.length > 3 ? 1 : 0);
+    return tWords.some(tw => levenshtein(qw, tw) <= maxDist);
+  });
+}
+
 function ShopPage() {
   const { q } = Route.useLoaderDeps();
-  const { data: products } = useSuspenseQuery(productsQueryOptions(q, 48));
+  // Fetch a larger batch of products to perform frontend filtering instead of relying on Shopify's strict backend search
+  const { data: products } = useSuspenseQuery(productsQueryOptions(undefined, 250));
   const search = Route.useSearch();
   const category = search.category;
   const initialFilter: Filter =
@@ -44,24 +75,33 @@ function ShopPage() {
   const [filter, setFilter] = useState<Filter>(initialFilter);
 
   const filtered = useMemo(() => {
-    if (filter === "all") return products;
-    return products.filter((p) => {
-      const tags = (p.node.tags ?? []).map((t) => t.toLowerCase());
-      const type = (p.node.productType ?? "").toLowerCase();
-      if (filter === "luxury") return tags.includes("luxury") || type.includes("luxury");
-      if (filter === "sport") return tags.includes("sport") || type.includes("sport");
-      if (filter === "autographed")
-        return (
-          tags.includes("autographed") ||
-          tags.includes("autograph") ||
-          tags.includes("signed") ||
-          tags.includes("memorabilia") ||
-          type.includes("autograph") ||
-          type.includes("memorabilia")
-        );
-      return true;
-    });
-  }, [products, filter]);
+    let result = products;
+
+    if (q) {
+      result = result.filter(p => fuzzyMatch(q, p.node.title + " " + (p.node.productType || "") + " " + (p.node.tags?.join(" ") || "")));
+    }
+
+    if (filter !== "all") {
+      result = result.filter((p) => {
+        const tags = (p.node.tags ?? []).map((t) => t.toLowerCase());
+        const type = (p.node.productType ?? "").toLowerCase();
+        if (filter === "luxury") return tags.includes("luxury") || type.includes("luxury");
+        if (filter === "sport") return tags.includes("sport") || type.includes("sport");
+        if (filter === "autographed")
+          return (
+            tags.includes("autographed") ||
+            tags.includes("autograph") ||
+            tags.includes("signed") ||
+            tags.includes("memorabilia") ||
+            type.includes("autograph") ||
+            type.includes("memorabilia")
+          );
+        return true;
+      });
+    }
+
+    return result;
+  }, [products, filter, q]);
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 py-8 sm:py-12">
