@@ -84,7 +84,7 @@ function Index() {
                 </div>
               </div>
               <div className="w-full lg:w-1/3 flex justify-center lg:justify-end shrink-0">
-                <img src="/logo.png" alt="Sports Luxury Logo" className="w-64 sm:w-80 lg:w-full max-w-md h-auto object-contain drop-shadow-2xl" />
+                <img src="/logo.png" alt="Sports Luxury Logo" className="w-64 sm:w-80 lg:w-full max-w-md h-auto object-contain drop-shadow-2xl mix-blend-lighten" />
               </div>
             </div>
           </motion.div>

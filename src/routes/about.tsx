@@ -34,7 +34,7 @@ function AboutPage() {
           By Rahul Sharma
         </p>
         <div className="pt-8">
-          <img src="/logo.png" alt="Sports Luxury Logo" className="h-24 md:h-32 w-auto object-contain drop-shadow-2xl" />
+          <img src="/logo.png" alt="Sports Luxury Logo" className="h-24 md:h-32 w-auto object-contain drop-shadow-2xl mix-blend-lighten" />
         </div>
       </div>
 
