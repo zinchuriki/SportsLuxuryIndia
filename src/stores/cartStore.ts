@@ -56,7 +56,7 @@ export const useCartStore = create<CartStore>()(
           const newQuantity = existingItem.quantity + item.quantity;
           set({
             items: items.map((i) =>
-              i.variantId === item.variantId ? { ...i, quantity: newQuantity } : i
+              i.variantId === item.variantId ? { ...i, quantity: newQuantity } : i,
             ),
           });
         } else {
@@ -71,9 +71,7 @@ export const useCartStore = create<CartStore>()(
           return;
         }
         set({
-          items: items.map((i) =>
-            i.variantId === variantId ? { ...i, quantity } : i
-          ),
+          items: items.map((i) => (i.variantId === variantId ? { ...i, quantity } : i)),
         });
       },
 

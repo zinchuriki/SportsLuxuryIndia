@@ -56,29 +56,36 @@ function Index() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="max-w-4xl"
+            className="w-full"
           >
             <div className="inline-flex items-center gap-2 px-3 py-1 border border-border rounded-full text-[10px] sm:text-xs uppercase tracking-widest text-muted-foreground mb-6 sm:mb-8">
               <Sparkles className="w-3 h-3 text-gold" />
               New season · Limited drops
             </div>
-            <h1 className="text-display text-[16vw] md:text-[10rem] uppercase leading-[0.85]">
-              Move
-              <br />
-              <span className="text-ember">Differently.</span>
-            </h1>
-            <p className="mt-6 sm:mt-8 text-sm sm:text-lg md:text-xl text-muted-foreground max-w-2xl">
-              A curated edit where luxury meets performance. Objects engineered for the way you
-              train, travel, and live — with the heft of heritage and the bite of the modern world.
-            </p>
-            <div className="mt-8 sm:mt-10 flex flex-wrap gap-4">
-              <Link
-                to="/shop"
-                className="group inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 gradient-ember text-ember-foreground font-display tracking-widest uppercase text-xs sm:text-sm rounded-sm hover:opacity-90 transition"
-              >
-                Shop the edit
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </Link>
+            <div className="flex flex-col lg:flex-row lg:items-center gap-12 lg:gap-20">
+              <div className="flex-1">
+                <h1 className="text-display text-[16vw] md:text-[8rem] uppercase leading-[0.85]">
+                  Move
+                  <br />
+                  <span className="text-ember">Differently.</span>
+                </h1>
+                <p className="mt-6 sm:mt-8 text-sm sm:text-lg md:text-xl text-muted-foreground max-w-2xl">
+                  A curated edit where luxury meets performance. Objects engineered for the way you
+                  train, travel, and live — with the heft of heritage and the bite of the modern world.
+                </p>
+                <div className="mt-8 sm:mt-10 flex flex-wrap gap-4">
+                  <Link
+                    to="/shop"
+                    className="group inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 gradient-ember text-ember-foreground font-display tracking-widest uppercase text-xs sm:text-sm rounded-sm hover:opacity-90 transition"
+                  >
+                    Shop the edit
+                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  </Link>
+                </div>
+              </div>
+              <div className="w-full lg:w-1/3 flex justify-center lg:justify-end shrink-0">
+                <img src="/logo.png" alt="Sports Luxury Logo" className="w-64 sm:w-80 lg:w-full max-w-md h-auto object-contain drop-shadow-2xl" />
+              </div>
             </div>
           </motion.div>
         </div>

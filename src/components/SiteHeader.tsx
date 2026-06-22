@@ -12,6 +12,7 @@ import { CartDrawer } from "./CartDrawer";
 
 const nav = [
   { to: "/", label: "Home" },
+  { to: "/about", label: "About Us" },
   { to: "/shop", label: "All Products" },
   { to: "/contact", label: "Contact" },
 ] as const;
