@@ -147,6 +147,7 @@ function Index() {
             <p className="mt-3 sm:mt-4 max-w-md text-sm sm:text-base opacity-90">{w.copy}</p>
             <Link
               to="/shop"
+              search={{ category: w.label.toLowerCase() }}
               className="mt-4 sm:mt-6 inline-flex items-center gap-2 text-xs sm:text-sm uppercase tracking-widest font-medium underline-offset-4 hover:underline self-start"
             >
               Explore {w.label} <ArrowRight className="w-4 h-4" />
