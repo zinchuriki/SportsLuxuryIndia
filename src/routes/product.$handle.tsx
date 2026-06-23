@@ -6,6 +6,7 @@ import { productByHandleQueryOptions } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/stores/cartStore";
 import { toast } from "sonner";
+import { formatPrice } from "@/lib/utils";
 
 export const Route = createFileRoute("/product/$handle")({
   loader: async ({ context, params }) => {
@@ -111,7 +112,7 @@ function ProductPage() {
           )}
           <h1 className="text-display text-3xl sm:text-5xl md:text-6xl uppercase leading-none">{product.title}</h1>
           <p className="mt-4 sm:mt-6 text-2xl sm:text-3xl text-gold font-semibold">
-            {variant.price.currencyCode} {parseFloat(variant.price.amount).toFixed(2)}
+            {formatPrice(variant.price.amount, variant.price.currencyCode, product.description)}
           </p>
 
           <p className="mt-4 sm:mt-6 text-sm sm:text-base text-muted-foreground leading-relaxed whitespace-pre-line">{product.description}</p>

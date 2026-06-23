@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/stores/cartStore";
 import type { ShopifyProduct } from "@/lib/shopify";
 import { toast } from "sonner";
+import { formatPrice } from "@/lib/utils";
 
 export function ProductCard({ product }: { product: ShopifyProduct }) {
   const addItem = useCartStore((s) => s.addItem);
@@ -79,7 +80,7 @@ export function ProductCard({ product }: { product: ShopifyProduct }) {
             )}
           </div>
           <p className="text-sm sm:text-base font-semibold text-gold whitespace-nowrap">
-            {price.currencyCode} {Number.parseFloat(price.amount).toFixed(2)}
+            {formatPrice(price.amount, price.currencyCode, node.description)}
           </p>
         </div>
       </Link>
