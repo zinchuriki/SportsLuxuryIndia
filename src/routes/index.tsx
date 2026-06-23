@@ -58,9 +58,15 @@ function Index() {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="w-full"
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1 border border-border rounded-full text-[10px] sm:text-xs uppercase tracking-widest text-muted-foreground mb-6 sm:mb-8">
-              <Sparkles className="w-3 h-3 text-gold" />
-              New season · Limited drops
+            <div className="flex flex-wrap gap-3 mb-6 sm:mb-8">
+              <div className="inline-flex items-center gap-2 px-3 py-1 border border-border rounded-full text-[10px] sm:text-xs uppercase tracking-widest text-muted-foreground">
+                <Sparkles className="w-3 h-3 text-gold" />
+                New season · Limited drops
+              </div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 border border-border rounded-full text-[10px] sm:text-xs uppercase tracking-widest text-muted-foreground">
+                <Zap className="w-3 h-3 text-ember" />
+                100+ Orders Fulfilled
+              </div>
             </div>
             <div className="flex flex-col lg:flex-row lg:items-center gap-12 lg:gap-20">
               <div className="flex-1">
