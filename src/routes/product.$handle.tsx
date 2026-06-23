@@ -1,7 +1,7 @@
 import { createFileRoute, notFound, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useState } from "react";
-import { Loader2, ShoppingBag, ArrowLeft } from "lucide-react";
+import { useState, useRef } from "react";
+import { Loader2, ShoppingBag, ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
 import { productByHandleQueryOptions } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/stores/cartStore";
@@ -47,6 +47,27 @@ function ProductPage() {
   const hasMultipleVariants = variants.length > 1;
   const displayImages = hasMultipleVariants && variant.image ? [variant.image] : allImages;
   const [selectedImage, setSelectedImage] = useState(variant.image ?? allImages[0] ?? null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  const navigateImage = (direction: "left" | "right", e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!selectedImage) return;
+    const currentIndex = displayImages.findIndex(img => img.url === selectedImage.url);
+    if (currentIndex === -1) return;
+    
+    let newIndex = direction === "left" ? currentIndex - 1 : currentIndex + 1;
+    if (newIndex < 0) newIndex = displayImages.length - 1;
+    if (newIndex >= displayImages.length) newIndex = 0;
+    
+    setSelectedImage(displayImages[newIndex]);
+    
+    if (scrollContainerRef.current) {
+      const button = scrollContainerRef.current.children[newIndex] as HTMLElement;
+      if (button) {
+        button.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+    }
+  };
 
   if (!product) return null;
 
@@ -76,7 +97,16 @@ function ProductPage() {
 
       <div className="grid md:grid-cols-2 gap-8 md:gap-12">
         <div>
-          <div className="aspect-square overflow-hidden bg-secondary rounded-sm flex items-center justify-center">
+          <div className="relative aspect-square overflow-hidden bg-transparent rounded-sm flex items-center justify-center group">
+            {displayImages.length > 1 && (
+              <button
+                onClick={(e) => navigateImage("left", e)}
+                className="absolute left-2 z-10 p-2 bg-background/80 backdrop-blur-sm border border-border text-foreground rounded-full shadow-sm hover:bg-muted opacity-0 group-hover:opacity-100 transition-opacity"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+            )}
+            
             {selectedImage ? (
               <img
                 src={selectedImage.url}
@@ -86,22 +116,33 @@ function ProductPage() {
             ) : (
               <div className="w-full h-full flex items-center justify-center text-muted-foreground">No image</div>
             )}
+
+            {displayImages.length > 1 && (
+              <button
+                onClick={(e) => navigateImage("right", e)}
+                className="absolute right-2 z-10 p-2 bg-background/80 backdrop-blur-sm border border-border text-foreground rounded-full shadow-sm hover:bg-muted opacity-0 group-hover:opacity-100 transition-opacity"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            )}
           </div>
           {displayImages.length > 1 && (
-            <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
-              {displayImages.map((img) => (
-                <button
-                  key={img.url}
-                  onClick={() => setSelectedImage(img)}
-                  className={`h-16 w-16 shrink-0 overflow-hidden rounded-sm border bg-secondary transition sm:h-20 sm:w-20 ${
-                    selectedImage?.url === img.url
-                      ? "border-foreground ring-1 ring-foreground"
-                      : "border-border opacity-60 hover:opacity-100"
-                  }`}
-                >
-                  <img src={img.url} alt="" className="h-full w-full object-contain" />
-                </button>
-              ))}
+            <div className="mt-3 flex items-center">
+              <div ref={scrollContainerRef} className="flex gap-2 overflow-x-auto pb-1 flex-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
+                {displayImages.map((img) => (
+                  <button
+                    key={img.url}
+                    onClick={() => setSelectedImage(img)}
+                    className={`h-16 w-16 shrink-0 overflow-hidden rounded-sm border bg-transparent transition sm:h-20 sm:w-20 ${
+                      selectedImage?.url === img.url
+                        ? "border-foreground ring-1 ring-foreground"
+                        : "border-border opacity-60 hover:opacity-100"
+                    }`}
+                  >
+                    <img src={img.url} alt="" className="h-full w-full object-contain" />
+                  </button>
+                ))}
+              </div>
             </div>
           )}
         </div>

@@ -64,7 +64,7 @@ export async function storefrontApiRequest(query: string, variables: Record<stri
 const PRODUCT_FIELDS = `
   id title description handle productType tags
   priceRange { minVariantPrice { amount currencyCode } }
-  images(first: 5) { edges { node { url altText } } }
+  images(first: 20) { edges { node { url altText } } }
   variants(first: 20) {
     edges { node {
       id title
