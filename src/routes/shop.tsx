@@ -11,7 +11,7 @@ export const Route = createFileRoute("/shop")({
     return {
       category: search.category as string | undefined,
       q: search.q as string | undefined,
-    }
+    };
   },
   loaderDeps: ({ search }) => ({ q: search.q }),
   head: () => ({
@@ -28,7 +28,8 @@ export const Route = createFileRoute("/shop")({
     ],
     links: [{ rel: "canonical", href: "/shop" }],
   }),
-  loader: ({ context, deps }) => context.queryClient.ensureQueryData(productsQueryOptions(deps.q, 48)),
+  loader: ({ context, deps }) =>
+    context.queryClient.ensureQueryData(productsQueryOptions(deps.q, 48)),
   component: ShopPage,
 });
 
@@ -42,7 +43,12 @@ function levenshtein(a: string, b: string): number {
   for (let i = 1; i <= b.length; i++) {
     for (let j = 1; j <= a.length; j++) {
       if (b[i - 1] === a[j - 1]) matrix[i][j] = matrix[i - 1][j - 1];
-      else matrix[i][j] = Math.min(matrix[i - 1][j - 1] + 1, matrix[i][j - 1] + 1, matrix[i - 1][j] + 1);
+      else
+        matrix[i][j] = Math.min(
+          matrix[i - 1][j - 1] + 1,
+          matrix[i][j - 1] + 1,
+          matrix[i - 1][j] + 1,
+        );
     }
   }
   return matrix[b.length][a.length];
@@ -52,15 +58,15 @@ function fuzzyMatch(query: string, text: string): boolean {
   const q = query.toLowerCase().trim();
   const t = text.toLowerCase();
   if (t.includes(q)) return true;
-  
+
   const qWords = q.split(/\s+/).filter(Boolean);
   if (qWords.length === 0) return true;
   const tWords = t.split(/[\s,.\-_]+/).filter(Boolean);
-  
-  return qWords.every(qw => {
-    if (tWords.some(tw => tw.includes(qw))) return true;
-    const maxDist = qw.length > 5 ? 2 : (qw.length > 3 ? 1 : 0);
-    return tWords.some(tw => levenshtein(qw, tw) <= maxDist);
+
+  return qWords.every((qw) => {
+    if (tWords.some((tw) => tw.includes(qw))) return true;
+    const maxDist = qw.length > 5 ? 2 : qw.length > 3 ? 1 : 0;
+    return tWords.some((tw) => levenshtein(qw, tw) <= maxDist);
   });
 }
 
@@ -69,16 +75,24 @@ function ShopPage() {
   // Fetch a larger batch of products to perform frontend filtering instead of relying on Shopify's strict backend search
   const { data: products } = useSuspenseQuery(productsQueryOptions(undefined, 250));
   const search = Route.useSearch();
-  const category = search.category;
+  let category = search.category?.toLowerCase();
+  if (category === "sports") category = "sport";
   const initialFilter: Filter =
-    category === "luxury" || category === "sport" || category === "autographed" ? category : "all";
+    category === "luxury" || category === "sport" || category === "autographed"
+      ? (category as Filter)
+      : "all";
   const [filter, setFilter] = useState<Filter>(initialFilter);
 
   const filtered = useMemo(() => {
     let result = products;
 
     if (q) {
-      result = result.filter(p => fuzzyMatch(q, p.node.title + " " + (p.node.productType || "") + " " + (p.node.tags?.join(" ") || "")));
+      result = result.filter((p) =>
+        fuzzyMatch(
+          q,
+          p.node.title + " " + (p.node.productType || "") + " " + (p.node.tags?.join(" ") || ""),
+        ),
+      );
     }
 
     if (filter !== "all") {
@@ -86,7 +100,8 @@ function ShopPage() {
         const tags = (p.node.tags ?? []).map((t) => t.toLowerCase());
         const type = (p.node.productType ?? "").toLowerCase();
         if (filter === "luxury") return tags.includes("luxury") || type.includes("luxury");
-        if (filter === "sport") return tags.includes("sport") || type.includes("sport");
+        if (filter === "sport")
+          return tags.includes("sport") || tags.includes("sports") || type.includes("sport");
         if (filter === "autographed")
           return (
             tags.includes("autographed") ||
