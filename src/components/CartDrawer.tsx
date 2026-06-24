@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { formatPrice } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -90,7 +91,7 @@ export function CartDrawer() {
                           </p>
                         )}
                         <p className="font-semibold mt-2 text-gold">
-                          {item.price.currencyCode} {parseFloat(item.price.amount).toFixed(2)}
+                          {formatPrice(item.price.amount, item.price.currencyCode, item.product.node.description)}
                         </p>
                       </div>
                       <div className="flex flex-col items-end justify-between flex-shrink-0">
@@ -130,7 +131,7 @@ export function CartDrawer() {
                 <div className="flex justify-between items-center">
                   <span className="text-display text-xl uppercase tracking-wider">Total</span>
                   <span className="text-2xl font-bold text-gold">
-                    {items[0]?.price.currencyCode || "INR"} {totalPrice.toFixed(2)}
+                    {totalPrice > 0 ? `${items[0]?.price.currencyCode || "INR"} ${totalPrice.toFixed(2)}` : "TBD"}
                   </span>
                 </div>
                 <Button
