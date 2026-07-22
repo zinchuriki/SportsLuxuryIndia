@@ -1,56 +1,187 @@
-import { j as jsxRuntimeExports } from "../_libs/react.mjs";
-import { L as Link } from "../_libs/tanstack__react-router.mjs";
-import { S as SpeedInsights } from "../_libs/vercel__speed-insights.mjs";
-import { u as useSuspenseQuery } from "../_libs/tanstack__react-query.mjs";
-import { p as productsQueryOptions } from "./router-BWu5p0Ec.mjs";
-import { E as EmptyState, P as ProductCard } from "./EmptyState-Bo0P93_2.mjs";
-import "../_libs/sonner.mjs";
-import { m as motion } from "../_libs/framer-motion.mjs";
-import { h as Sparkles, Z as Zap, i as ArrowRight } from "../_libs/lucide-react.mjs";
-import "../_libs/tanstack__router-core.mjs";
-import "../_libs/tanstack__history.mjs";
-import "../_libs/cookie-es.mjs";
-import "../_libs/seroval.mjs";
-import "../_libs/seroval-plugins.mjs";
-import "node:stream/web";
+import { W as jsxRuntimeExports, r as reactExports } from "./server-CZPPjn-5.mjs";
+import { L as Link, p as productsQueryOptions, c as createLucideIcon } from "./router-ZAigrvxl.mjs";
+import { u as useSuspenseQuery } from "./loader-circle-DsZOph1N.mjs";
+import { m as motion, E as EmptyState, P as ProductCard } from "./EmptyState-BFJNLyeE.mjs";
+import "node:async_hooks";
 import "node:stream";
-import "../_libs/react-dom.mjs";
+import "node:stream/web";
 import "util";
 import "crypto";
 import "async_hooks";
 import "stream";
-import "../_libs/isbot.mjs";
-import "../_libs/tanstack__query-core.mjs";
-import "../_libs/radix-ui__react-dialog.mjs";
-import "../_libs/radix-ui__primitive.mjs";
-import "../_libs/radix-ui__react-compose-refs.mjs";
-import "../_libs/radix-ui__react-context.mjs";
-import "../_libs/radix-ui__react-id.mjs";
-import "../_libs/@radix-ui/react-use-layout-effect+[...].mjs";
-import "../_libs/@radix-ui/react-use-controllable-state+[...].mjs";
-import "../_libs/@radix-ui/react-dismissable-layer+[...].mjs";
-import "../_libs/radix-ui__react-primitive.mjs";
-import "../_libs/radix-ui__react-slot.mjs";
-import "../_libs/@radix-ui/react-use-callback-ref+[...].mjs";
-import "../_libs/@radix-ui/react-use-escape-keydown+[...].mjs";
-import "../_libs/radix-ui__react-focus-scope.mjs";
-import "../_libs/radix-ui__react-portal.mjs";
-import "../_libs/radix-ui__react-presence.mjs";
-import "../_libs/radix-ui__react-focus-guards.mjs";
-import "../_libs/react-remove-scroll.mjs";
-import "tslib";
-import "../_libs/react-remove-scroll-bar.mjs";
-import "../_libs/react-style-singleton.mjs";
-import "../_libs/get-nonce.mjs";
-import "../_libs/use-sidecar.mjs";
-import "../_libs/use-callback-ref.mjs";
-import "../_libs/aria-hidden.mjs";
-import "../_libs/class-variance-authority.mjs";
-import "../_libs/clsx.mjs";
-import "../_libs/tailwind-merge.mjs";
-import "../_libs/zustand.mjs";
-import "../_libs/motion-dom.mjs";
-import "../_libs/motion-utils.mjs";
+const __iconNode$2 = [
+  ["path", { d: "M5 12h14", key: "1ays0h" }],
+  ["path", { d: "m12 5 7 7-7 7", key: "xquz4c" }]
+];
+const ArrowRight = createLucideIcon("arrow-right", __iconNode$2);
+const __iconNode$1 = [
+  [
+    "path",
+    {
+      d: "M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z",
+      key: "1s2grr"
+    }
+  ],
+  ["path", { d: "M20 2v4", key: "1rf3ol" }],
+  ["path", { d: "M22 4h-4", key: "gwowj6" }],
+  ["circle", { cx: "4", cy: "20", r: "2", key: "6kqj1y" }]
+];
+const Sparkles = createLucideIcon("sparkles", __iconNode$1);
+const __iconNode = [
+  [
+    "path",
+    {
+      d: "M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z",
+      key: "1xq2db"
+    }
+  ]
+];
+const Zap = createLucideIcon("zap", __iconNode);
+var initQueue = () => {
+  if (window.si) return;
+  window.si = function a(...params) {
+    window.siq = window.siq || [];
+    window.siq.push(params);
+  };
+};
+var name = "@vercel/speed-insights";
+var version = "2.0.0";
+function isBrowser() {
+  return typeof window !== "undefined";
+}
+function detectEnvironment() {
+  try {
+    const env = "production";
+    if (env === "development" || env === "test") ;
+  } catch {
+  }
+  return "production";
+}
+function isDevelopment() {
+  return detectEnvironment() === "development";
+}
+function getScriptSrc(props) {
+  if (props.scriptSrc) {
+    return makeAbsolute(props.scriptSrc);
+  }
+  if (isDevelopment()) ;
+  if (props.dsn) {
+    return "https://va.vercel-scripts.com/v1/speed-insights/script.js";
+  }
+  if (props.basePath) {
+    return makeAbsolute(`${props.basePath}/speed-insights/script.js`);
+  }
+  return "/_vercel/speed-insights/script.js";
+}
+function loadProps(explicitProps, confString) {
+  var _a;
+  let props = explicitProps;
+  if (confString) {
+    try {
+      props = {
+        ...(_a = JSON.parse(confString)) == null ? void 0 : _a.speedInsights,
+        ...explicitProps
+      };
+    } catch {
+    }
+  }
+  const dataset = {
+    sdkn: name + (props.framework ? `/${props.framework}` : ""),
+    sdkv: version
+  };
+  if (props.sampleRate) {
+    dataset.sampleRate = props.sampleRate.toString();
+  }
+  if (props.route) {
+    dataset.route = props.route;
+  }
+  if (isDevelopment()) ;
+  if (props.dsn) {
+    dataset.dsn = props.dsn;
+  }
+  if (props.endpoint) {
+    dataset.endpoint = makeAbsolute(props.endpoint);
+  } else if (props.basePath) {
+    dataset.endpoint = makeAbsolute(`${props.basePath}/speed-insights/vitals`);
+  }
+  return {
+    src: getScriptSrc(props),
+    beforeSend: props.beforeSend,
+    dataset
+  };
+}
+function makeAbsolute(url) {
+  return url.startsWith("http://") || url.startsWith("https://") || url.startsWith("/") ? url : `/${url}`;
+}
+function injectSpeedInsights(props = {}, confString) {
+  var _a;
+  if (!isBrowser() || props.route === null) return null;
+  initQueue();
+  const { beforeSend, src, dataset } = loadProps(props, confString);
+  if (document.head.querySelector(`script[src*="${src}"]`)) return null;
+  if (beforeSend) {
+    (_a = window.si) == null ? void 0 : _a.call(window, "beforeSend", beforeSend);
+  }
+  const script = document.createElement("script");
+  script.src = src;
+  script.defer = true;
+  for (const [key, value] of Object.entries(dataset)) {
+    script.dataset[key] = value;
+  }
+  script.onerror = () => {
+    console.log(
+      `[Vercel Speed Insights] Failed to load script from ${src}. Please check if any content blockers are enabled and try again.`
+    );
+  };
+  document.head.appendChild(script);
+  return {
+    setRoute: (route) => {
+      script.dataset.route = route ?? void 0;
+    }
+  };
+}
+function getBasePath() {
+  if (typeof process === "undefined" || typeof process.env === "undefined") {
+    return void 0;
+  }
+  return process.env.REACT_APP_VERCEL_OBSERVABILITY_BASEPATH;
+}
+function getConfigString() {
+  if (typeof process === "undefined" || typeof process.env === "undefined") {
+    return void 0;
+  }
+  return process.env.REACT_APP_VERCEL_OBSERVABILITY_CLIENT_CONFIG;
+}
+function SpeedInsights(props) {
+  reactExports.useEffect(() => {
+    var _a;
+    if (props.beforeSend) {
+      (_a = window.si) == null ? void 0 : _a.call(window, "beforeSend", props.beforeSend);
+    }
+  }, [props.beforeSend]);
+  const setScriptRoute = reactExports.useRef(null);
+  reactExports.useEffect(() => {
+    if (!setScriptRoute.current) {
+      const script = injectSpeedInsights(
+        {
+          framework: props.framework ?? "react",
+          basePath: props.basePath ?? getBasePath(),
+          ...props
+        },
+        props.configString ?? getConfigString()
+      );
+      if (script) {
+        setScriptRoute.current = script.setRoute;
+      }
+    }
+  }, [props]);
+  reactExports.useEffect(() => {
+    if (setScriptRoute.current && props.route) {
+      setScriptRoute.current(props.route);
+    }
+  }, [props.route]);
+  return null;
+}
 const MARQUEE_WORDS = ["Performance", "Luxury", "Precision", "Speed", "Craft", "Power", "Heritage", "Edge"];
 function Index() {
   const {

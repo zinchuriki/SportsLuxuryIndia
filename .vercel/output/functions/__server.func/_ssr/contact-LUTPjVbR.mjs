@@ -1,5 +1,27 @@
-import { r as reactExports, j as jsxRuntimeExports } from "../_libs/react.mjs";
-import { d as Mail, e as Phone } from "../_libs/lucide-react.mjs";
+import { r as reactExports, W as jsxRuntimeExports } from "./server-CZPPjn-5.mjs";
+import { c as createLucideIcon } from "./router-ZAigrvxl.mjs";
+import "node:async_hooks";
+import "node:stream";
+import "node:stream/web";
+import "util";
+import "crypto";
+import "async_hooks";
+import "stream";
+const __iconNode$1 = [
+  ["path", { d: "m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7", key: "132q7q" }],
+  ["rect", { x: "2", y: "4", width: "20", height: "16", rx: "2", key: "izxlao" }]
+];
+const Mail = createLucideIcon("mail", __iconNode$1);
+const __iconNode = [
+  [
+    "path",
+    {
+      d: "M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384",
+      key: "9njp5v"
+    }
+  ]
+];
+const Phone = createLucideIcon("phone", __iconNode);
 function ContactPage() {
   const [name, setName] = reactExports.useState("");
   const [email, setEmail] = reactExports.useState("");

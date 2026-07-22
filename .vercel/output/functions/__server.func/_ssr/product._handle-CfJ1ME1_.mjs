@@ -1,55 +1,22 @@
-import { r as reactExports, j as jsxRuntimeExports } from "../_libs/react.mjs";
-import { u as useSuspenseQuery } from "../_libs/tanstack__react-query.mjs";
-import { a as Route, u as useCartStore, f as formatPrice, B as Button, b as productByHandleQueryOptions } from "./router-BWu5p0Ec.mjs";
-import { t as toast } from "../_libs/sonner.mjs";
-import { A as ArrowLeft, C as ChevronLeft, j as ChevronRight, L as LoaderCircle, a as ShoppingBag } from "../_libs/lucide-react.mjs";
-import "../_libs/tanstack__query-core.mjs";
-import "../_libs/tanstack__react-router.mjs";
-import "../_libs/tanstack__router-core.mjs";
-import "../_libs/tanstack__history.mjs";
-import "../_libs/cookie-es.mjs";
-import "../_libs/seroval.mjs";
-import "../_libs/seroval-plugins.mjs";
-import "node:stream/web";
+import { r as reactExports, W as jsxRuntimeExports } from "./server-CZPPjn-5.mjs";
+import { u as useSuspenseQuery, L as LoaderCircle } from "./loader-circle-DsZOph1N.mjs";
+import { a as Route2, u as useCartStore, f as formatPrice, B as Button, S as ShoppingBag, b as productByHandleQueryOptions, c as createLucideIcon, t as toast } from "./router-ZAigrvxl.mjs";
+import { A as ArrowLeft } from "./arrow-left-Cym9nbjA.mjs";
+import "node:async_hooks";
 import "node:stream";
-import "../_libs/react-dom.mjs";
+import "node:stream/web";
 import "util";
 import "crypto";
 import "async_hooks";
 import "stream";
-import "../_libs/isbot.mjs";
-import "../_libs/radix-ui__react-dialog.mjs";
-import "../_libs/radix-ui__primitive.mjs";
-import "../_libs/radix-ui__react-compose-refs.mjs";
-import "../_libs/radix-ui__react-context.mjs";
-import "../_libs/radix-ui__react-id.mjs";
-import "../_libs/@radix-ui/react-use-layout-effect+[...].mjs";
-import "../_libs/@radix-ui/react-use-controllable-state+[...].mjs";
-import "../_libs/@radix-ui/react-dismissable-layer+[...].mjs";
-import "../_libs/radix-ui__react-primitive.mjs";
-import "../_libs/radix-ui__react-slot.mjs";
-import "../_libs/@radix-ui/react-use-callback-ref+[...].mjs";
-import "../_libs/@radix-ui/react-use-escape-keydown+[...].mjs";
-import "../_libs/radix-ui__react-focus-scope.mjs";
-import "../_libs/radix-ui__react-portal.mjs";
-import "../_libs/radix-ui__react-presence.mjs";
-import "../_libs/radix-ui__react-focus-guards.mjs";
-import "../_libs/react-remove-scroll.mjs";
-import "tslib";
-import "../_libs/react-remove-scroll-bar.mjs";
-import "../_libs/react-style-singleton.mjs";
-import "../_libs/get-nonce.mjs";
-import "../_libs/use-sidecar.mjs";
-import "../_libs/use-callback-ref.mjs";
-import "../_libs/aria-hidden.mjs";
-import "../_libs/class-variance-authority.mjs";
-import "../_libs/clsx.mjs";
-import "../_libs/tailwind-merge.mjs";
-import "../_libs/zustand.mjs";
+const __iconNode$1 = [["path", { d: "m15 18-6-6 6-6", key: "1wnfg3" }]];
+const ChevronLeft = createLucideIcon("chevron-left", __iconNode$1);
+const __iconNode = [["path", { d: "m9 18 6-6-6-6", key: "mthhwq" }]];
+const ChevronRight = createLucideIcon("chevron-right", __iconNode);
 function ProductPage() {
   const {
     handle
-  } = Route.useParams();
+  } = Route2.useParams();
   const {
     data: product
   } = useSuspenseQuery(productByHandleQueryOptions(handle));

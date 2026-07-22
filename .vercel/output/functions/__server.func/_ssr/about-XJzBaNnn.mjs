@@ -1,5 +1,34 @@
-import { j as jsxRuntimeExports } from "../_libs/react.mjs";
-import { f as Star, g as Target, G as Globe } from "../_libs/lucide-react.mjs";
+import { W as jsxRuntimeExports } from "./server-CZPPjn-5.mjs";
+import { c as createLucideIcon } from "./router-ZAigrvxl.mjs";
+import "node:async_hooks";
+import "node:stream";
+import "node:stream/web";
+import "util";
+import "crypto";
+import "async_hooks";
+import "stream";
+const __iconNode$2 = [
+  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
+  ["path", { d: "M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20", key: "13o1zl" }],
+  ["path", { d: "M2 12h20", key: "9i4pu4" }]
+];
+const Globe = createLucideIcon("globe", __iconNode$2);
+const __iconNode$1 = [
+  [
+    "path",
+    {
+      d: "M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z",
+      key: "r04s7s"
+    }
+  ]
+];
+const Star = createLucideIcon("star", __iconNode$1);
+const __iconNode = [
+  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
+  ["circle", { cx: "12", cy: "12", r: "6", key: "1vlfrh" }],
+  ["circle", { cx: "12", cy: "12", r: "2", key: "1c9p78" }]
+];
+const Target = createLucideIcon("target", __iconNode);
 function AboutPage() {
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mx-auto max-w-5xl px-6 py-20 lg:py-32", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center space-y-6 mb-20 md:mb-32 flex flex-col items-center", children: [
