@@ -34,7 +34,10 @@ function AboutPage() {
           By Rahul Sharma
         </p>
         <div className="pt-8">
-          <img src="/logo.png" alt="Sports Luxury Logo" className="h-24 md:h-32 w-auto object-contain drop-shadow-2xl mix-blend-lighten" />
+          <picture>
+            <source srcSet="/logo.webp" type="image/webp" />
+            <img src="/logo.png" alt="Sports Luxury Logo" width={300} height={300} loading="lazy" decoding="async" className="h-24 md:h-32 w-auto object-contain drop-shadow-2xl mix-blend-lighten" />
+          </picture>
         </div>
       </div>
 
@@ -58,15 +61,22 @@ function AboutPage() {
         </div>
         <div className="order-1 lg:order-2 relative group flex justify-center">
           <div className="absolute -inset-4 bg-gradient-to-br from-ember/20 to-india/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition duration-700"></div>
-          <img
-            src="/rahul-sharma.jpeg"
-            alt="Rahul Sharma, Founder of Sports Luxury"
-            className="w-full max-w-md h-auto rounded-2xl object-cover shadow-2xl relative z-10 border border-border/50"
-            onError={(e) => {
-              (e.target as HTMLImageElement).src =
-                "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=800";
-            }}
-          />
+          <picture className="w-full max-w-md relative z-10">
+            <source srcSet="/rahul-sharma.webp" type="image/webp" />
+            <img
+              src="/rahul-sharma.jpeg"
+              alt="Rahul Sharma, Founder of Sports Luxury"
+              width={400}
+              height={400}
+              loading="lazy"
+              decoding="async"
+              className="w-full h-auto rounded-2xl object-cover shadow-2xl border border-border/50"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src =
+                  "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=800";
+              }}
+            />
+          </picture>
         </div>
       </div>
 

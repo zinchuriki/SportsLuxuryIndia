@@ -50,7 +50,7 @@ export function SiteHeader() {
               <SheetHeader>
                 <SheetTitle className="text-left font-display text-lg sm:text-xl tracking-[0.12em] uppercase flex items-center gap-2">
                   <span>Sports<span className="text-ember">Luxury</span><span className="text-india drop-shadow-sm">India</span></span>
-                  <img src="https://upload.wikimedia.org/wikipedia/en/4/41/Flag_of_India.svg" alt="India Flag" className="h-4 sm:h-5 w-auto animate-flag shrink-0 rounded-sm" />
+                  <img src="https://upload.wikimedia.org/wikipedia/en/4/41/Flag_of_India.svg" alt="India Flag" width={20} height={13} decoding="async" className="h-4 sm:h-5 w-auto animate-flag shrink-0 rounded-sm" />
                 </SheetTitle>
               </SheetHeader>
               <nav className="mt-8 flex flex-col gap-1">
@@ -99,7 +99,7 @@ export function SiteHeader() {
           <span className="font-display text-sm sm:text-2xl tracking-[0.12em] sm:tracking-[0.2em] uppercase truncate">
             Sports<span className="text-ember">Luxury</span><span className="text-india drop-shadow-sm">India</span>
           </span>
-          <img src="https://upload.wikimedia.org/wikipedia/en/4/41/Flag_of_India.svg" alt="India Flag" className="h-3 sm:h-5 w-auto animate-flag shrink-0 rounded-sm" />
+          <img src="https://upload.wikimedia.org/wikipedia/en/4/41/Flag_of_India.svg" alt="India Flag" width={20} height={13} decoding="async" className="h-3 sm:h-5 w-auto animate-flag shrink-0 rounded-sm" />
         </Link>
 
         <div className="flex items-center justify-end gap-2">

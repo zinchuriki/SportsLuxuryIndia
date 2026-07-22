@@ -44,6 +44,8 @@ export function ProductCard({ product }: { product: ShopifyProduct }) {
             <img
               src={image.url}
               alt={image.altText ?? node.title}
+              loading="lazy"
+              decoding="async"
               className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105"
             />
           ) : (

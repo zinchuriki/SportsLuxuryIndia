@@ -90,7 +90,18 @@ function Index() {
                 </div>
               </div>
               <div className="w-full lg:w-1/3 flex justify-center lg:justify-end shrink-0">
-                <img src="/logo.png" alt="Sports Luxury Logo" className="w-64 sm:w-80 lg:w-full max-w-md h-auto object-contain drop-shadow-2xl mix-blend-lighten" />
+                <picture>
+                  <source srcSet="/logo.webp" type="image/webp" />
+                  <img
+                    src="/logo.png"
+                    alt="Sports Luxury Logo"
+                    width={600}
+                    height={600}
+                    fetchPriority="high"
+                    decoding="async"
+                    className="w-64 sm:w-80 lg:w-full max-w-md h-auto object-contain drop-shadow-2xl mix-blend-lighten"
+                  />
+                </picture>
               </div>
             </div>
           </motion.div>
