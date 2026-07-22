@@ -15,5 +15,8 @@ export default defineConfig({
   // Force-enable Nitro and explicitly set Netlify as the deployment target
   nitro: {
     preset: "vercel",
+    externals: {
+      inline: ["tslib", "react-remove-scroll"],
+    },
   },
 });
