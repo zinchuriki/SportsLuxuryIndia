@@ -7,16 +7,19 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 export default defineConfig({
+  vite: {
+    ssr: {
+      noExternal: true,
+    },
+  },
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this
     server: { entry: "server" },
   },
-  // Force-enable Nitro and explicitly set Netlify as the deployment target
+  // Force-enable Nitro and explicitly set Vercel as the deployment target
   nitro: {
     preset: "vercel",
-    externals: {
-      inline: ["tslib", "react-remove-scroll"],
-    },
+    noExternals: true,
   },
 });
