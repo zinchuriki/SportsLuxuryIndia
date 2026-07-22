@@ -589,6 +589,7 @@ const Route$5 = createRootRouteWithContext()({
       }
     ],
     links: [
+      { rel: "icon", href: "/favicon.ico" },
       { rel: "icon", type: "image/jpeg", href: "/favicon.jpeg" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
@@ -698,7 +699,7 @@ const productByHandleQueryOptions = (handle) => queryOptions({
   queryFn: () => fetchProductByHandle(handle),
   staleTime: 6e4
 });
-const $$splitComponentImporter$4 = () => import("./shop-CmJz3jPv.mjs");
+const $$splitComponentImporter$4 = () => import("./shop-DJfAwtMx.mjs");
 const Route$4 = createFileRoute("/shop")({
   validateSearch: (search) => {
     return {
@@ -785,7 +786,7 @@ const Route$2 = createFileRoute("/about")({
   }),
   component: lazyRouteComponent($$splitComponentImporter$2, "component")
 });
-const $$splitComponentImporter$1 = () => import("./index-DW_Od7Ch.mjs");
+const $$splitComponentImporter$1 = () => import("./index-8Zd9lSyx.mjs");
 const Route$1 = createFileRoute("/")({
   head: () => ({
     meta: [{
@@ -813,7 +814,7 @@ const Route$1 = createFileRoute("/")({
   }) => context.queryClient.ensureQueryData(productsQueryOptions(void 0, 8)),
   component: lazyRouteComponent($$splitComponentImporter$1, "component")
 });
-const $$splitComponentImporter = () => import("./product._handle-RbQ1peOU.mjs");
+const $$splitComponentImporter = () => import("./product._handle-Az2KJdgM.mjs");
 const Route = createFileRoute("/product/$handle")({
   loader: async ({
     context,

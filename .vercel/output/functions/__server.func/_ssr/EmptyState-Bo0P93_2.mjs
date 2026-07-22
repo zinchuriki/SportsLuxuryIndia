@@ -1,6 +1,6 @@
 import { j as jsxRuntimeExports } from "../_libs/react.mjs";
 import { L as Link } from "../_libs/tanstack__react-router.mjs";
-import { u as useCartStore, B as Button, f as formatPrice } from "./router-DbF-rMdo.mjs";
+import { u as useCartStore, B as Button, f as formatPrice } from "./router-BWu5p0Ec.mjs";
 import { t as toast } from "../_libs/sonner.mjs";
 import { m as motion } from "../_libs/framer-motion.mjs";
 import { L as LoaderCircle, P as Plus } from "../_libs/lucide-react.mjs";

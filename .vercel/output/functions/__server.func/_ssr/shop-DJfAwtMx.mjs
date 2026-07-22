@@ -1,8 +1,8 @@
 import { r as reactExports, j as jsxRuntimeExports } from "../_libs/react.mjs";
 import { L as Link } from "../_libs/tanstack__react-router.mjs";
 import { u as useSuspenseQuery } from "../_libs/tanstack__react-query.mjs";
-import { R as Route$4, p as productsQueryOptions } from "./router-DbF-rMdo.mjs";
-import { E as EmptyState, P as ProductCard } from "./EmptyState-C-8M3bl6.mjs";
+import { R as Route$4, p as productsQueryOptions } from "./router-BWu5p0Ec.mjs";
+import { E as EmptyState, P as ProductCard } from "./EmptyState-Bo0P93_2.mjs";
 import "../_libs/sonner.mjs";
 import { A as ArrowLeft } from "../_libs/lucide-react.mjs";
 import "../_libs/tanstack__router-core.mjs";

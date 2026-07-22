@@ -1,6 +1,6 @@
 import { r as reactExports, j as jsxRuntimeExports } from "../_libs/react.mjs";
 import { u as useSuspenseQuery } from "../_libs/tanstack__react-query.mjs";
-import { a as Route, u as useCartStore, f as formatPrice, B as Button, b as productByHandleQueryOptions } from "./router-DbF-rMdo.mjs";
+import { a as Route, u as useCartStore, f as formatPrice, B as Button, b as productByHandleQueryOptions } from "./router-BWu5p0Ec.mjs";
 import { t as toast } from "../_libs/sonner.mjs";
 import { A as ArrowLeft, C as ChevronLeft, j as ChevronRight, L as LoaderCircle, a as ShoppingBag } from "../_libs/lucide-react.mjs";
 import "../_libs/tanstack__query-core.mjs";
